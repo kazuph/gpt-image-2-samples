@@ -48,12 +48,14 @@
         top: 18px !important;
         right: 18px !important;
         left: auto !important;
+        z-index: 30 !important;
       }
 
       .pnlm-fullscreen-toggle-button {
         top: 88px !important;
         right: 18px !important;
         left: auto !important;
+        z-index: 31 !important;
       }
 
       .hud {
@@ -76,6 +78,45 @@
         line-height: 1.15;
         white-space: nowrap;
         letter-spacing: 0;
+      }
+
+      .hud-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        color: var(--text);
+        text-align: left;
+      }
+
+      .hud-toggle::after {
+        content: "−";
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        margin-left: 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--accent);
+        font-size: 16px;
+        line-height: 1;
+      }
+
+      .hud.collapsed {
+        width: min(242px, calc(100vw - 76px));
+        padding: 9px 11px;
+      }
+
+      .hud.collapsed .hud-toggle::after {
+        content: "+";
+      }
+
+      .hud.collapsed .hud-body {
+        display: none;
       }
 
       .hud p {
@@ -218,18 +259,24 @@
         .pnlm-controls-container {
           top: 12px !important;
           right: 12px !important;
+          z-index: 40 !important;
         }
 
         .pnlm-fullscreen-toggle-button {
-          top: 82px !important;
+          top: 80px !important;
           right: 12px !important;
+          z-index: 41 !important;
         }
 
         .hud {
           top: 12px;
           left: 12px;
-          width: calc(100vw - 24px);
+          width: min(242px, calc(100vw - 76px));
           padding: 10px 12px;
+        }
+
+        .hud h1 {
+          font-size: 15px;
         }
 
         .scene-picker {
@@ -262,26 +309,30 @@
   <body>
     <div id="viewer" aria-label="360 panorama viewer"></div>
 
-    <aside class="hud">
-      <h1>コミケカメラ小僧360°ビュー</h1>
-      <p class="intro">中心に来る主役カットだけを集めたパノラマ集です。</p>
-      <p class="tips"><strong>移動:</strong> WASD / 矢印 / 右下カーソルで視点移動。ドラッグでも見回せます。</p>
-      <p class="tips"><strong>補足:</strong> + / - でズーム、Enter か「正面に戻す」でリセットできます。</p>
+    <aside class="hud" id="hud">
+      <button type="button" class="hud-toggle" id="hudToggle" aria-expanded="true">
+        <h1>コミケカメラ小僧360°ビュー</h1>
+      </button>
+      <div class="hud-body" id="hudBody">
+        <p class="intro">中心に来る主役カットだけを集めたパノラマ集です。</p>
+        <p class="tips"><strong>移動:</strong> WASD / 矢印 / 右下カーソルで視点移動。ドラッグでも見回せます。</p>
+        <p class="tips"><strong>補足:</strong> + / - でズーム、Enter か「正面に戻す」でリセットできます。</p>
 
-      <div class="scene-picker" id="scenePicker">
-        <button type="button" class="scene-chip" data-scene-id="scene-01">Scene 01</button>
-        <button type="button" class="scene-chip active" data-scene-id="scene-02">Scene 02</button>
-        <button type="button" class="scene-chip" data-scene-id="scene-03">Scene 03</button>
-        <button type="button" class="scene-chip" data-scene-id="scene-04">Scene 04</button>
-        <button type="button" class="scene-chip" data-scene-id="scene-05">Scene 05</button>
-        <button type="button" class="scene-chip" data-scene-id="scene-06">Scene 06</button>
-      </div>
+        <div class="scene-picker" id="scenePicker">
+          <button type="button" class="scene-chip" data-scene-id="scene-01">Scene 01</button>
+          <button type="button" class="scene-chip active" data-scene-id="scene-02">Scene 02</button>
+          <button type="button" class="scene-chip" data-scene-id="scene-03">Scene 03</button>
+          <button type="button" class="scene-chip" data-scene-id="scene-04">Scene 04</button>
+          <button type="button" class="scene-chip" data-scene-id="scene-05">Scene 05</button>
+          <button type="button" class="scene-chip" data-scene-id="scene-06">Scene 06</button>
+        </div>
 
-      <div class="legend" id="legend"></div>
+        <div class="legend" id="legend"></div>
 
-      <div class="controls">
-        <button type="button" id="resetView">正面に戻す</button>
-        <button type="button" class="ghost" id="toggleAutoRotate">ゆっくり回す</button>
+        <div class="controls">
+          <button type="button" id="resetView">正面に戻す</button>
+          <button type="button" class="ghost" id="toggleAutoRotate">ゆっくり回す</button>
+        </div>
       </div>
     </aside>
 
@@ -417,6 +468,8 @@
       window.panoramaViewer = viewer;
 
       const legendRoot = document.getElementById("legend");
+      const hud = document.getElementById("hud");
+      const hudToggle = document.getElementById("hudToggle");
       const sceneButtons = Array.from(document.querySelectorAll(".scene-chip"));
       const moveButtons = Array.from(document.querySelectorAll("[data-move]"));
       let isAutoRotating = false;
@@ -477,6 +530,11 @@
       };
 
       renderSceneMeta(currentSceneId);
+
+      hudToggle.addEventListener("click", () => {
+        const isCollapsed = hud.classList.toggle("collapsed");
+        hudToggle.setAttribute("aria-expanded", String(!isCollapsed));
+      });
 
       resetButton.addEventListener("click", resetView);
 
