@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>コミケカメラ小僧 360 Panorama</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230c1117'/%3E%3Ccircle cx='32' cy='32' r='18' fill='%23ffd24d'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%230c1117'/%3E%3C/svg%3E"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
+    >
+    <style>
+      :root {
+        --bg: #0c1117;
+        --panel: rgba(12, 17, 23, 0.78);
+        --line: rgba(255, 255, 255, 0.14);
+        --text: #f5f7fa;
+        --muted: #b7c0cc;
+        --accent: #ffd24d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      body {
+        overflow: hidden;
+      }
+
+      #viewer {
+        position: fixed;
+        inset: 0;
+      }
+
+      .pnlm-controls-container {
+        top: 18px !important;
+        right: 18px !important;
+        left: auto !important;
+      }
+
+      .pnlm-fullscreen-toggle-button {
+        top: 88px !important;
+        right: 18px !important;
+        left: auto !important;
+      }
+
+      .hud {
+        position: fixed;
+        top: 18px;
+        left: 18px;
+        z-index: 10;
+        width: min(360px, calc(100vw - 36px));
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      }
+
+      .hud h1 {
+        margin: 0 0 8px;
+        font-size: 22px;
+        line-height: 1.2;
+      }
+
+      .hud p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .scene-picker {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .scene-chip {
+        padding: 11px 10px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .scene-chip.active {
+        background: var(--accent);
+        color: #15191f;
+      }
+
+      .legend {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .legend-item {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .dir {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 999px;
+        background: rgba(255, 210, 77, 0.14);
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .legend-item strong,
+      .legend-item span {
+        display: block;
+      }
+
+      .legend-item span {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      button {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 11px 16px;
+        background: var(--accent);
+        color: #15191f;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .ghost {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+      }
+
+      .credit {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        z-index: 10;
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+        color: var(--muted);
+        font-size: 13px;
+        backdrop-filter: blur(18px);
+      }
+
+      @media (max-width: 700px) {
+        .pnlm-controls-container {
+          top: 12px !important;
+          right: 12px !important;
+        }
+
+        .pnlm-fullscreen-toggle-button {
+          top: 82px !important;
+          right: 12px !important;
+        }
+
+        .hud {
+          top: 12px;
+          left: 12px;
+          width: calc(100vw - 24px);
+          padding: 14px;
+        }
+
+        .legend {
+          gap: 8px;
+        }
+
+        .scene-picker {
+          grid-template-columns: 1fr;
+        }
+
+        .legend-item {
+          grid-template-columns: 42px 1fr;
+          gap: 10px;
+          padding: 9px 10px;
+        }
+
+        .dir {
+          width: 42px;
+          height: 42px;
+          font-size: 13px;
+        }
+
+        .controls {
+          flex-wrap: wrap;
+        }
+
+        .credit {
+          left: 12px;
+          right: 12px;
+          bottom: 12px;
+          border-radius: 14px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewer" aria-label="360 panorama viewer"></div>
+
+    <aside class="hud">
+      <h1>コミケカメラ小僧 360° ビュー</h1>
+      <p>ドラッグで見回し、ホイールでズームできます。画像自体には UI を焼き込まず、HTML 側で案内だけを分離しています。</p>
+
+      <div class="scene-picker" id="scenePicker">
+        <button type="button" class="scene-chip" data-scene-id="scene-01">Scene 01</button>
+        <button type="button" class="scene-chip" data-scene-id="scene-02">Scene 02</button>
+        <button type="button" class="scene-chip" data-scene-id="scene-03">Scene 03</button>
+        <button type="button" class="scene-chip" data-scene-id="scene-04">Scene 04</button>
+        <button type="button" class="scene-chip" data-scene-id="scene-05">Scene 05</button>
+        <button type="button" class="scene-chip" data-scene-id="scene-06">Scene 06</button>
+        <button type="button" class="scene-chip active" data-scene-id="scene-07">Scene 07</button>
+      </div>
+
+      <div class="legend" id="legend"></div>
+
+      <div class="controls">
+        <button type="button" id="resetView">正面に戻す</button>
+        <button type="button" class="ghost" id="toggleAutoRotate">ゆっくり回す</button>
+      </div>
+    </aside>
+
+    <div class="credit">画像: <code id="creditFile">scene-07-seller-booth.png</code></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <script>
+      const sceneCatalog = {
+        "scene-01": {
+          title: "Scene 01",
+          file: "scene-01-plaza-four-directions.png",
+          legend: [
+            { dir: "北", title: "巫女テック", detail: "やさしい手振りポーズ" },
+            { dir: "東", title: "レトロ SF", detail: "敬礼ポーズ" },
+            { dir: "南", title: "ファンタジーバトル", detail: "振り向きポーズ" },
+            { dir: "西", title: "祭りサイバー和装", detail: "両手ハートポーズ" }
+          ]
+        },
+        "scene-02": {
+          title: "Scene 02",
+          file: "scene-02-center-seated-trio.png",
+          legend: [
+            { dir: "左", title: "レトロ SF", detail: "敬礼ポーズ" },
+            { dir: "中", title: "センター主役", detail: "床座りの視線誘導ポーズ" },
+            { dir: "右", title: "ファンタジーバトル", detail: "振り向きポーズ" }
+          ]
+        },
+        "scene-03": {
+          title: "Scene 03",
+          file: "scene-03-gothic-sunset-trio.png",
+          legend: [
+            { dir: "左", title: "フューチャーレーサー", detail: "手を腰に当てたアクションポーズ" },
+            { dir: "中", title: "ゴシック主役", detail: "床座りの視線キャッチポーズ" },
+            { dir: "右", title: "エンジェルパンク", detail: "振り向きピースポーズ" }
+          ]
+        },
+        "scene-04": {
+          title: "Scene 04",
+          file: "scene-04-indoor-hall-trio.png",
+          legend: [
+            { dir: "左", title: "ヒーラーメイジ", detail: "やわらかな手招きポーズ" },
+            { dir: "中", title: "ミリタリーアイドル", detail: "正面から迫る主役ポーズ" },
+            { dir: "右", title: "サイバーニンジャ", detail: "振り向きクールポーズ" }
+          ]
+        },
+        "scene-05": {
+          title: "Scene 05",
+          file: "scene-05-corporate-booth-trio.png",
+          legend: [
+            { dir: "左", title: "マジカルストリーマー", detail: "両手ウェーブポーズ" },
+            { dir: "中", title: "メカプリンセス", detail: "展示台センターポーズ" },
+            { dir: "右", title: "ディテクティブノワール", detail: "静かな傾きポーズ" }
+          ]
+        },
+        "scene-06": {
+          title: "Scene 06",
+          file: "scene-06-doujin-aisle-trio.png",
+          legend: [
+            { dir: "左", title: "ストリートテック", detail: "しゃがみピースポーズ" },
+            { dir: "中", title: "大正レトロ主役", detail: "椅子に座った正面ポーズ" },
+            { dir: "右", title: "アイスゴシック", detail: "人形めいた静止ポーズ" }
+          ]
+        },
+        "scene-07": {
+          title: "Scene 07",
+          file: "scene-07-seller-booth.png",
+          legend: [
+            { dir: "左", title: "売り子ヘルパー", detail: "頒布物を整える作業ポーズ" },
+            { dir: "中", title: "看板売り子", detail: "机越しに本を勧める歓迎ポーズ" },
+            { dir: "右", title: "買い手コスプレイヤー", detail: "戦利品バッグを持つ振り向き姿" }
+          ]
+        }
+      };
+
+      const buildLegendMarkup = (items) =>
+        items
+          .map(
+            (item) => `
+              <div class="legend-item">
+                <div class="dir">${item.dir}</div>
+                <div>
+                  <strong>${item.title}</strong>
+                  <span>${item.detail}</span>
+                </div>
+              </div>
+            `
+          )
+          .join("");
+
+      const viewer = pannellum.viewer("viewer", {
+        default: {
+          firstScene: "scene-03",
+          autoLoad: true,
+          sceneFadeDuration: 400
+        },
+        scenes: {
+          "scene-01": {
+            type: "equirectangular",
+            panorama: "./scene-01-plaza-four-directions.png"
+          },
+          "scene-02": {
+            type: "equirectangular",
+            panorama: "./scene-02-center-seated-trio.png"
+          },
+          "scene-03": {
+            type: "equirectangular",
+            panorama: "./scene-03-gothic-sunset-trio.png"
+          },
+          "scene-04": {
+            type: "equirectangular",
+            panorama: "./scene-04-indoor-hall-trio.png"
+          },
+          "scene-05": {
+            type: "equirectangular",
+            panorama: "./scene-05-corporate-booth-trio.png"
+          },
+          "scene-06": {
+            type: "equirectangular",
+            panorama: "./scene-06-doujin-aisle-trio.png"
+          },
+          "scene-07": {
+            type: "equirectangular",
+            panorama: "./scene-07-seller-booth.png"
+          }
+        },
+        autoLoad: true,
+        showControls: true,
+        compass: false,
+        mouseZoom: true,
+        draggable: true,
+        hfov: 110,
+        minHfov: 50,
+        maxHfov: 130,
+        pitch: 0,
+        yaw: 0
+      });
+      window.panoramaViewer = viewer;
+
+      const legendRoot = document.getElementById("legend");
+      const creditFile = document.getElementById("creditFile");
+      const sceneButtons = Array.from(document.querySelectorAll(".scene-chip"));
+      let isAutoRotating = false;
+      const resetButton = document.getElementById("resetView");
+      const rotateButton = document.getElementById("toggleAutoRotate");
+      let currentSceneId = "scene-07";
+
+      const renderSceneMeta = (sceneId) => {
+        const scene = sceneCatalog[sceneId];
+        legendRoot.innerHTML = buildLegendMarkup(scene.legend);
+        creditFile.textContent = scene.file;
+        sceneButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.sceneId === sceneId);
+        });
+      };
+
+      renderSceneMeta(currentSceneId);
+
+      resetButton.addEventListener("click", () => {
+        viewer.stopAutoRotate();
+        isAutoRotating = false;
+        rotateButton.textContent = "ゆっくり回す";
+        viewer.setPitch(0, 600);
+        viewer.setYaw(0, 600);
+        viewer.setHfov(110, 600);
+      });
+
+      rotateButton.addEventListener("click", () => {
+        isAutoRotating = !isAutoRotating;
+        if (isAutoRotating) {
+          viewer.startAutoRotate(2);
+          rotateButton.textContent = "回転を止める";
+          return;
+        }
+        viewer.stopAutoRotate();
+        rotateButton.textContent = "ゆっくり回す";
+      });
+
+      sceneButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const nextSceneId = button.dataset.sceneId;
+          if (nextSceneId === currentSceneId) {
+            return;
+          }
+          viewer.stopAutoRotate();
+          isAutoRotating = false;
+          rotateButton.textContent = "ゆっくり回す";
+          currentSceneId = nextSceneId;
+          viewer.loadScene(nextSceneId, 0, 0, 110);
+          renderSceneMeta(nextSceneId);
+        });
+      });
+    </script>
+  </body>
+</html>
