@@ -422,6 +422,24 @@
           )
           .join("");
 
+      const getViewportProfile = () => {
+        const isPortraitPhone = window.matchMedia("(max-width: 700px) and (orientation: portrait)").matches;
+        if (isPortraitPhone) {
+          return {
+            hfov: 82,
+            minHfov: 48,
+            maxHfov: 96
+          };
+        }
+        return {
+          hfov: 110,
+          minHfov: 50,
+          maxHfov: 130
+        };
+      };
+
+      const viewportProfile = getViewportProfile();
+
       const viewer = pannellum.viewer("viewer", {
         default: {
           firstScene: "scene-02",
@@ -459,9 +477,9 @@
         compass: false,
         mouseZoom: true,
         draggable: true,
-        hfov: 110,
-        minHfov: 50,
-        maxHfov: 130,
+        hfov: viewportProfile.hfov,
+        minHfov: viewportProfile.minHfov,
+        maxHfov: viewportProfile.maxHfov,
         pitch: 0,
         yaw: 0
       });
@@ -484,7 +502,10 @@
       };
 
       const clampPitch = (value) => Math.max(-85, Math.min(85, value));
-      const clampHfov = (value) => Math.max(50, Math.min(130, value));
+      const clampHfov = (value) => {
+        const profile = getViewportProfile();
+        return Math.max(profile.minHfov, Math.min(profile.maxHfov, value));
+      };
 
       const stopRotation = () => {
         viewer.stopAutoRotate();
@@ -494,9 +515,10 @@
 
       const resetView = () => {
         stopRotation();
+        const profile = getViewportProfile();
         viewer.setPitch(0, 600);
         viewer.setYaw(0, 600);
-        viewer.setHfov(110, 600);
+        viewer.setHfov(profile.hfov, 600);
       };
 
       const nudgeView = (direction) => {
@@ -556,7 +578,7 @@
           }
           stopRotation();
           currentSceneId = nextSceneId;
-          viewer.loadScene(nextSceneId, 0, 0, 110);
+          viewer.loadScene(nextSceneId, 0, 0, getViewportProfile().hfov);
           renderSceneMeta(nextSceneId);
         });
       });
