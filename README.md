@@ -1,6 +1,6 @@
 # GPT Image 2 Panorama Samples
 
-AI-generated 360-degree panorama samples published with GitHub Pages.
+AI-generated 360-degree panorama sample collections published with GitHub Pages.
 
 ## Preview
 
@@ -19,6 +19,6 @@ Open `http://127.0.0.1:8765/` after the server starts.
 
 ## Contents
 
-The viewer currently includes six centered-character panorama scenes. The first
-four-character test scene was removed so the scene list only contains images
-where the main subject is placed near the center.
+- `site/index.html`: collection entrance page.
+- `site/comike/`: six centered-character Comiket camera-kid panorama scenes.
+- `site/shinkansen/`: three railway-photography panorama scenes.

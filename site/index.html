@@ -3,21 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>コミケカメラ小僧 360 Panorama</title>
+    <title>360 Panorama Samples</title>
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230c1117'/%3E%3Ccircle cx='32' cy='32' r='18' fill='%23ffd24d'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%230c1117'/%3E%3C/svg%3E"
-    >
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1016'/%3E%3Ccircle cx='32' cy='32' r='18' fill='%23ffd24d'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%230b1016'/%3E%3C/svg%3E"
     >
     <style>
       :root {
-        --bg: #0c1117;
-        --panel: rgba(12, 17, 23, 0.78);
-        --line: rgba(255, 255, 255, 0.14);
-        --text: #f5f7fa;
+        --bg: #081018;
+        --panel: rgba(12, 17, 23, 0.72);
+        --line: rgba(255, 255, 255, 0.16);
+        --text: #f7f3e8;
         --muted: #b7c0cc;
         --accent: #ffd24d;
       }
@@ -26,604 +22,175 @@
         box-sizing: border-box;
       }
 
-      html,
       body {
+        min-height: 100vh;
         margin: 0;
-        height: 100%;
-        background: var(--bg);
         color: var(--text);
         font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+        background:
+          radial-gradient(circle at 18% 14%, rgba(255, 210, 77, 0.18), transparent 28rem),
+          radial-gradient(circle at 88% 20%, rgba(79, 165, 255, 0.22), transparent 30rem),
+          linear-gradient(135deg, #081018 0%, #111720 52%, #1b160f 100%);
       }
 
-      body {
-        overflow: hidden;
-      }
-
-      #viewer {
-        position: fixed;
-        inset: 0;
-      }
-
-      .pnlm-controls-container {
-        top: 18px !important;
-        right: 18px !important;
-        left: auto !important;
-        z-index: 30 !important;
-      }
-
-      .pnlm-fullscreen-toggle-button {
-        top: 88px !important;
-        right: 18px !important;
-        left: auto !important;
-        z-index: 31 !important;
-      }
-
-      .hud {
-        position: fixed;
-        top: 16px;
-        left: 16px;
-        z-index: 10;
-        width: min(242px, calc(100vw - 24px));
-        padding: 10px 12px;
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        background: var(--panel);
-        backdrop-filter: blur(18px);
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-      }
-
-      .hud h1 {
-        margin: 0;
-        font-size: 17px;
-        line-height: 1.15;
-        white-space: nowrap;
-        letter-spacing: 0;
-      }
-
-      .hud-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        padding: 0;
-        border-radius: 0;
-        background: transparent;
-        color: var(--text);
-        text-align: left;
-      }
-
-      .hud-toggle::after {
-        content: "−";
+      main {
         display: grid;
-        place-items: center;
-        width: 24px;
-        height: 24px;
-        margin-left: 8px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.1);
+        align-content: center;
+        width: min(1120px, calc(100% - 32px));
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 56px 0;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
         color: var(--accent);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 0;
+        font-size: clamp(34px, 6vw, 72px);
+        line-height: 0.98;
+        letter-spacing: -0.06em;
+      }
+
+      .lead {
+        max-width: 660px;
+        margin: 18px 0 0;
+        color: var(--muted);
         font-size: 16px;
-        line-height: 1;
+        line-height: 1.75;
       }
 
-      .hud.collapsed {
-        width: min(242px, calc(100vw - 76px));
-        padding: 9px 11px;
-      }
-
-      .hud.collapsed .hud-toggle::after {
-        content: "+";
-      }
-
-      .hud.collapsed .hud-body {
-        display: none;
-      }
-
-      .hud p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 11px;
-        line-height: 1.45;
-      }
-
-      .intro {
-        margin-top: 8px;
-      }
-
-      .tips {
-        margin-top: 8px;
-        font-size: 10px;
-        line-height: 1.45;
-        color: var(--muted);
-      }
-
-      .tips strong {
-        color: var(--text);
-      }
-
-      .scene-picker {
+      .grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 6px;
-        margin-top: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 34px;
       }
 
-      .scene-chip {
-        padding: 8px 6px;
+      .card {
+        position: relative;
+        min-height: 360px;
+        overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.05);
+        border-radius: 28px;
         color: var(--text);
-        font-size: 11px;
-        font-weight: 700;
+        text-decoration: none;
+        background: #111720;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.34);
       }
 
-      .scene-chip.active {
-        background: var(--accent);
-        color: #15191f;
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--cover);
+        background-size: cover;
+        background-position: center;
+        filter: saturate(1.05) contrast(0.92);
+        transform: scale(1.02);
+        transition: transform 300ms ease, filter 300ms ease;
       }
 
-      .legend {
-        display: grid;
-        gap: 6px;
-        margin-top: 10px;
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 12%, rgba(0, 0, 0, 0.18) 48%, rgba(0, 0, 0, 0.82) 100%);
       }
 
-      .legend-item {
-        display: grid;
-        grid-template-columns: 34px 1fr;
-        gap: 8px;
-        align-items: center;
-        padding: 7px 8px;
+      .card:hover::before,
+      .card:focus-visible::before {
+        filter: saturate(1.18) contrast(1);
+        transform: scale(1.06);
+      }
+
+      .card-content {
+        position: absolute;
+        right: 22px;
+        bottom: 22px;
+        left: 22px;
+        z-index: 1;
+        padding: 18px;
         border: 1px solid var(--line);
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.04);
+        border-radius: 22px;
+        background: var(--panel);
+        backdrop-filter: blur(16px);
       }
 
-      .dir {
-        display: grid;
+      .tag {
+        display: inline-grid;
         place-items: center;
-        width: 34px;
-        height: 34px;
+        min-width: 76px;
+        padding: 6px 10px;
         border-radius: 999px;
-        background: rgba(255, 210, 77, 0.14);
-        color: var(--accent);
-        font-weight: 700;
-        font-size: 11px;
-      }
-
-      .legend-item strong,
-      .legend-item span {
-        display: block;
-      }
-
-      .legend-item span {
-        margin-top: 2px;
-        color: var(--muted);
-        font-size: 10px;
-      }
-
-      .controls {
-        display: flex;
-        gap: 6px;
-        margin-top: 10px;
-      }
-
-      button {
-        appearance: none;
-        border: 0;
-        border-radius: 999px;
-        padding: 9px 12px;
         background: var(--accent);
         color: #15191f;
         font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
+        font-weight: 900;
       }
 
-      .ghost {
-        background: rgba(255, 255, 255, 0.08);
-        color: var(--text);
+      .card h2 {
+        margin: 12px 0 0;
+        font-size: clamp(24px, 3vw, 38px);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
       }
 
-      .pad {
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        z-index: 10;
-        display: grid;
-        grid-template-columns: repeat(3, 40px);
-        grid-template-rows: repeat(3, 40px);
-        gap: 4px;
-        padding: 8px;
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        background: var(--panel);
-        backdrop-filter: blur(18px);
+      .card p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
       }
 
-      .pad button {
-        display: grid;
-        place-items: center;
-        padding: 0;
-        border-radius: 10px;
-        font-size: 18px;
-        line-height: 1;
-      }
-
-      .pad-spacer {
-        visibility: hidden;
-      }
-
-      @media (max-width: 700px) {
-        .pnlm-controls-container {
-          top: 12px !important;
-          right: 12px !important;
-          z-index: 40 !important;
+      @media (max-width: 760px) {
+        main {
+          min-height: auto;
+          padding: 34px 0;
         }
 
-        .pnlm-fullscreen-toggle-button {
-          top: 80px !important;
-          right: 12px !important;
-          z-index: 41 !important;
+        .grid {
+          grid-template-columns: 1fr;
         }
 
-        .hud {
-          top: 12px;
-          left: 12px;
-          width: min(242px, calc(100vw - 76px));
-          padding: 10px 12px;
-        }
-
-        .hud h1 {
-          font-size: 15px;
-        }
-
-        .scene-picker {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .legend-item {
-          grid-template-columns: 32px 1fr;
-        }
-
-        .dir {
-          width: 32px;
-          height: 32px;
-          font-size: 10px;
-        }
-
-        .controls {
-          flex-wrap: wrap;
-        }
-
-        .pad {
-          right: 12px;
-          bottom: 12px;
-          grid-template-columns: repeat(3, 36px);
-          grid-template-rows: repeat(3, 36px);
+        .card {
+          min-height: 320px;
         }
       }
     </style>
   </head>
   <body>
-    <div id="viewer" aria-label="360 panorama viewer"></div>
+    <main>
+      <p class="eyebrow">360 panorama collection</p>
+      <h1>ぐりぐり見回せる撮影ゲーム画面サンプル</h1>
+      <p class="lead">
+        テーマごとにパノラマを分けました。入口から見たいシリーズを選ぶと、各ビューアでシーンを即切り替えできます。
+      </p>
 
-    <aside class="hud" id="hud">
-      <button type="button" class="hud-toggle" id="hudToggle" aria-expanded="true">
-        <h1>コミケカメラ小僧360°ビュー</h1>
-      </button>
-      <div class="hud-body" id="hudBody">
-        <p class="intro">中心に来る主役カットだけを集めたパノラマ集です。</p>
-        <p class="tips"><strong>移動:</strong> WASD / 矢印 / 右下カーソルで視点移動。ドラッグでも見回せます。</p>
-        <p class="tips"><strong>補足:</strong> + / - でズーム、Enter か「正面に戻す」でリセットできます。</p>
+      <section class="grid" aria-label="sample collections">
+        <a class="card" href="./comike/" style="--cover: url('./comike/scene-02-gothic-sunset-trio.png')">
+          <div class="card-content">
+            <span class="tag">6 scenes</span>
+            <h2>コミケカメラ小僧</h2>
+            <p>コスプレイヤーの好感度でポーズが増える、イベント会場の一人称パノラマ。</p>
+          </div>
+        </a>
 
-        <div class="scene-picker" id="scenePicker">
-          <button type="button" class="scene-chip" data-scene-id="scene-01">Scene 01</button>
-          <button type="button" class="scene-chip active" data-scene-id="scene-02">Scene 02</button>
-          <button type="button" class="scene-chip" data-scene-id="scene-03">Scene 03</button>
-          <button type="button" class="scene-chip" data-scene-id="scene-04">Scene 04</button>
-          <button type="button" class="scene-chip" data-scene-id="scene-05">Scene 05</button>
-          <button type="button" class="scene-chip" data-scene-id="scene-06">Scene 06</button>
-        </div>
-
-        <div class="legend" id="legend"></div>
-
-        <div class="controls">
-          <button type="button" id="resetView">正面に戻す</button>
-          <button type="button" class="ghost" id="toggleAutoRotate">ゆっくり回す</button>
-        </div>
-      </div>
-    </aside>
-
-    <div class="pad" aria-label="view controls">
-      <span class="pad-spacer"></span>
-      <button type="button" class="ghost" data-move="up" aria-label="up">▲</button>
-      <span class="pad-spacer"></span>
-      <button type="button" class="ghost" data-move="left" aria-label="left">◀</button>
-      <button type="button" class="ghost" data-move="center" aria-label="reset">●</button>
-      <button type="button" class="ghost" data-move="right" aria-label="right">▶</button>
-      <span class="pad-spacer"></span>
-      <button type="button" class="ghost" data-move="down" aria-label="down">▼</button>
-      <span class="pad-spacer"></span>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-    <script>
-      const sceneCatalog = {
-        "scene-01": {
-          title: "Scene 01",
-          file: "scene-01-center-seated-trio.png",
-          legend: [
-            { dir: "左", title: "レトロ SF", detail: "敬礼ポーズ" },
-            { dir: "中", title: "センター主役", detail: "床座りの視線誘導ポーズ" },
-            { dir: "右", title: "ファンタジーバトル", detail: "振り向きポーズ" }
-          ]
-        },
-        "scene-02": {
-          title: "Scene 02",
-          file: "scene-02-gothic-sunset-trio.png",
-          legend: [
-            { dir: "左", title: "フューチャーレーサー", detail: "手を腰に当てたアクションポーズ" },
-            { dir: "中", title: "ゴシック主役", detail: "床座りの視線キャッチポーズ" },
-            { dir: "右", title: "エンジェルパンク", detail: "振り向きピースポーズ" }
-          ]
-        },
-        "scene-03": {
-          title: "Scene 03",
-          file: "scene-03-indoor-hall-trio.png",
-          legend: [
-            { dir: "左", title: "ヒーラーメイジ", detail: "やわらかな手招きポーズ" },
-            { dir: "中", title: "ミリタリーアイドル", detail: "正面から迫る主役ポーズ" },
-            { dir: "右", title: "サイバーニンジャ", detail: "振り向きクールポーズ" }
-          ]
-        },
-        "scene-04": {
-          title: "Scene 04",
-          file: "scene-04-corporate-booth-trio.png",
-          legend: [
-            { dir: "左", title: "マジカルストリーマー", detail: "両手ウェーブポーズ" },
-            { dir: "中", title: "メカプリンセス", detail: "展示台センターポーズ" },
-            { dir: "右", title: "ディテクティブノワール", detail: "静かな傾きポーズ" }
-          ]
-        },
-        "scene-05": {
-          title: "Scene 05",
-          file: "scene-05-doujin-aisle-trio.png",
-          legend: [
-            { dir: "左", title: "ストリートテック", detail: "しゃがみピースポーズ" },
-            { dir: "中", title: "大正レトロ主役", detail: "椅子に座った正面ポーズ" },
-            { dir: "右", title: "アイスゴシック", detail: "人形めいた静止ポーズ" }
-          ]
-        },
-        "scene-06": {
-          title: "Scene 06",
-          file: "scene-06-seller-booth.png",
-          legend: [
-            { dir: "左", title: "売り子ヘルパー", detail: "頒布物を整える作業ポーズ" },
-            { dir: "中", title: "看板売り子", detail: "机越しに本を勧める歓迎ポーズ" },
-            { dir: "右", title: "買い手コスプレイヤー", detail: "戦利品バッグを持つ振り向き姿" }
-          ]
-        }
-      };
-
-      const buildLegendMarkup = (items) =>
-        items
-          .map(
-            (item) => `
-              <div class="legend-item">
-                <div class="dir">${item.dir}</div>
-                <div>
-                  <strong>${item.title}</strong>
-                  <span>${item.detail}</span>
-                </div>
-              </div>
-            `
-          )
-          .join("");
-
-      const getViewportProfile = () => {
-        const isPortraitPhone = window.matchMedia("(max-width: 700px) and (orientation: portrait)").matches;
-        if (isPortraitPhone) {
-          return {
-            hfov: 82,
-            minHfov: 48,
-            maxHfov: 96
-          };
-        }
-        return {
-          hfov: 110,
-          minHfov: 50,
-          maxHfov: 130
-        };
-      };
-
-      const viewportProfile = getViewportProfile();
-
-      const viewer = pannellum.viewer("viewer", {
-        default: {
-          firstScene: "scene-02",
-          autoLoad: true,
-          sceneFadeDuration: 400
-        },
-        scenes: {
-          "scene-01": {
-            type: "equirectangular",
-            panorama: "./scene-01-center-seated-trio.png"
-          },
-          "scene-02": {
-            type: "equirectangular",
-            panorama: "./scene-02-gothic-sunset-trio.png"
-          },
-          "scene-03": {
-            type: "equirectangular",
-            panorama: "./scene-03-indoor-hall-trio.png"
-          },
-          "scene-04": {
-            type: "equirectangular",
-            panorama: "./scene-04-corporate-booth-trio.png"
-          },
-          "scene-05": {
-            type: "equirectangular",
-            panorama: "./scene-05-doujin-aisle-trio.png"
-          },
-          "scene-06": {
-            type: "equirectangular",
-            panorama: "./scene-06-seller-booth.png"
-          }
-        },
-        autoLoad: true,
-        showControls: true,
-        compass: false,
-        mouseZoom: true,
-        draggable: true,
-        hfov: viewportProfile.hfov,
-        minHfov: viewportProfile.minHfov,
-        maxHfov: viewportProfile.maxHfov,
-        pitch: 0,
-        yaw: 0
-      });
-      window.panoramaViewer = viewer;
-
-      const legendRoot = document.getElementById("legend");
-      const hud = document.getElementById("hud");
-      const hudToggle = document.getElementById("hudToggle");
-      const sceneButtons = Array.from(document.querySelectorAll(".scene-chip"));
-      const moveButtons = Array.from(document.querySelectorAll("[data-move]"));
-      let isAutoRotating = false;
-      const resetButton = document.getElementById("resetView");
-      const rotateButton = document.getElementById("toggleAutoRotate");
-      let currentSceneId = "scene-02";
-
-      const moveStep = {
-        yaw: 12,
-        pitch: 8,
-        hfov: 8
-      };
-
-      const clampPitch = (value) => Math.max(-85, Math.min(85, value));
-      const clampHfov = (value) => {
-        const profile = getViewportProfile();
-        return Math.max(profile.minHfov, Math.min(profile.maxHfov, value));
-      };
-
-      const stopRotation = () => {
-        viewer.stopAutoRotate();
-        isAutoRotating = false;
-        rotateButton.textContent = "ゆっくり回す";
-      };
-
-      const resetView = () => {
-        stopRotation();
-        const profile = getViewportProfile();
-        viewer.setPitch(0, 600);
-        viewer.setYaw(0, 600);
-        viewer.setHfov(profile.hfov, 600);
-      };
-
-      const nudgeView = (direction) => {
-        stopRotation();
-        if (direction === "left") {
-          viewer.setYaw(viewer.getYaw() - moveStep.yaw);
-        }
-        if (direction === "right") {
-          viewer.setYaw(viewer.getYaw() + moveStep.yaw);
-        }
-        if (direction === "up") {
-          viewer.setPitch(clampPitch(viewer.getPitch() + moveStep.pitch));
-        }
-        if (direction === "down") {
-          viewer.setPitch(clampPitch(viewer.getPitch() - moveStep.pitch));
-        }
-        if (direction === "zoomIn") {
-          viewer.setHfov(clampHfov(viewer.getHfov() - moveStep.hfov));
-        }
-        if (direction === "zoomOut") {
-          viewer.setHfov(clampHfov(viewer.getHfov() + moveStep.hfov));
-        }
-      };
-
-      const renderSceneMeta = (sceneId) => {
-        const scene = sceneCatalog[sceneId];
-        legendRoot.innerHTML = buildLegendMarkup(scene.legend);
-        sceneButtons.forEach((button) => {
-          button.classList.toggle("active", button.dataset.sceneId === sceneId);
-        });
-      };
-
-      renderSceneMeta(currentSceneId);
-
-      hudToggle.addEventListener("click", () => {
-        const isCollapsed = hud.classList.toggle("collapsed");
-        hudToggle.setAttribute("aria-expanded", String(!isCollapsed));
-      });
-
-      resetButton.addEventListener("click", resetView);
-
-      rotateButton.addEventListener("click", () => {
-        isAutoRotating = !isAutoRotating;
-        if (isAutoRotating) {
-          viewer.startAutoRotate(2);
-          rotateButton.textContent = "回転を止める";
-          return;
-        }
-        stopRotation();
-      });
-
-      sceneButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const nextSceneId = button.dataset.sceneId;
-          if (nextSceneId === currentSceneId) {
-            return;
-          }
-          stopRotation();
-          currentSceneId = nextSceneId;
-          viewer.loadScene(nextSceneId, 0, 0, getViewportProfile().hfov);
-          renderSceneMeta(nextSceneId);
-        });
-      });
-
-      moveButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const direction = button.dataset.move;
-          if (direction === "center") {
-            resetView();
-            return;
-          }
-          nudgeView(direction);
-        });
-      });
-
-      document.addEventListener("keydown", (event) => {
-        const key = event.key.toLowerCase();
-        const handledKeys = {
-          w: "up",
-          a: "left",
-          s: "down",
-          d: "right",
-          arrowup: "up",
-          arrowleft: "left",
-          arrowdown: "down",
-          arrowright: "right",
-          "+": "zoomIn",
-          "=": "zoomIn",
-          "-": "zoomOut",
-          _: "zoomOut"
-        };
-
-        if (key === "enter" || key === "0") {
-          event.preventDefault();
-          resetView();
-          return;
-        }
-
-        if (!handledKeys[key]) {
-          return;
-        }
-
-        event.preventDefault();
-        nudgeView(handledKeys[key]);
-      });
-    </script>
+        <a class="card" href="./shinkansen/" style="--cover: url('./shinkansen/scene-01-hayabusa-komachi.png')">
+          <div class="card-content">
+            <span class="tag">3 scenes</span>
+            <h2>新幹線撮り鉄</h2>
+            <p>はやぶさ＋こまち、かがやき、夜間輸送を安全な撮影地点から見回すパノラマ。</p>
+          </div>
+        </a>
+      </section>
+    </main>
   </body>
 </html>

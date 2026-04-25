@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>新幹線撮り鉄 360 Panorama</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1016'/%3E%3Cpath d='M10 38h44L44 22H20z' fill='%23f5f7fa'/%3E%3Cpath d='M12 40h40' stroke='%23ffd24d' stroke-width='5'/%3E%3C/svg%3E"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
+    >
+    <style>
+      :root {
+        --bg: #081018;
+        --panel: rgba(8, 16, 24, 0.78);
+        --line: rgba(255, 255, 255, 0.14);
+        --text: #f5f7fa;
+        --muted: #b7c0cc;
+        --accent: #ffd24d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      body {
+        overflow: hidden;
+      }
+
+      #viewer {
+        position: fixed;
+        inset: 0;
+      }
+
+      .pnlm-controls-container {
+        top: 18px !important;
+        right: 18px !important;
+        left: auto !important;
+        z-index: 30 !important;
+      }
+
+      .pnlm-fullscreen-toggle-button {
+        top: 88px !important;
+        right: 18px !important;
+        left: auto !important;
+        z-index: 31 !important;
+      }
+
+      .hud {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 10;
+        width: min(242px, calc(100vw - 24px));
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      }
+
+      .hud h1 {
+        margin: 0;
+        font-size: 17px;
+        line-height: 1.15;
+        white-space: nowrap;
+        letter-spacing: 0;
+      }
+
+      .hud-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        color: var(--text);
+        text-align: left;
+      }
+
+      .hud-toggle::after {
+        content: "-";
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        margin-left: 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--accent);
+        font-size: 16px;
+        line-height: 1;
+      }
+
+      .hud.collapsed {
+        width: min(242px, calc(100vw - 76px));
+        padding: 9px 11px;
+      }
+
+      .hud.collapsed .hud-toggle::after {
+        content: "+";
+      }
+
+      .hud.collapsed .hud-body {
+        display: none;
+      }
+
+      .hud p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.45;
+      }
+
+      .intro {
+        margin-top: 8px;
+      }
+
+      .tips {
+        margin-top: 8px;
+        font-size: 10px;
+        line-height: 1.45;
+        color: var(--muted);
+      }
+
+      .tips strong {
+        color: var(--text);
+      }
+
+      .home-link {
+        display: inline-flex;
+        margin-top: 8px;
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .scene-picker {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .scene-chip {
+        padding: 8px 6px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .scene-chip.active {
+        background: var(--accent);
+        color: #15191f;
+      }
+
+      .legend {
+        display: grid;
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .legend-item {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 8px;
+        align-items: center;
+        padding: 7px 8px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .dir {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: rgba(255, 210, 77, 0.14);
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 11px;
+      }
+
+      .legend-item strong,
+      .legend-item span {
+        display: block;
+      }
+
+      .legend-item span {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      button {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 9px 12px;
+        background: var(--accent);
+        color: #15191f;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .ghost {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+      }
+
+      .pad {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 10;
+        display: grid;
+        grid-template-columns: repeat(3, 40px);
+        grid-template-rows: repeat(3, 40px);
+        gap: 4px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+      }
+
+      .pad button {
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border-radius: 10px;
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .pad-spacer {
+        visibility: hidden;
+      }
+
+      @media (max-width: 700px) {
+        .pnlm-controls-container {
+          top: 12px !important;
+          right: 12px !important;
+          z-index: 40 !important;
+        }
+
+        .pnlm-fullscreen-toggle-button {
+          top: 80px !important;
+          right: 12px !important;
+          z-index: 41 !important;
+        }
+
+        .hud {
+          top: 12px;
+          left: 12px;
+          width: min(242px, calc(100vw - 76px));
+          padding: 10px 12px;
+        }
+
+        .hud h1 {
+          font-size: 15px;
+        }
+
+        .legend-item {
+          grid-template-columns: 32px 1fr;
+        }
+
+        .dir {
+          width: 32px;
+          height: 32px;
+          font-size: 10px;
+        }
+
+        .controls {
+          flex-wrap: wrap;
+        }
+
+        .pad {
+          right: 12px;
+          bottom: 12px;
+          grid-template-columns: repeat(3, 36px);
+          grid-template-rows: repeat(3, 36px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewer" aria-label="360 panorama viewer"></div>
+
+    <aside class="hud" id="hud">
+      <button type="button" class="hud-toggle" id="hudToggle" aria-expanded="true">
+        <h1>新幹線撮り鉄360°ビュー</h1>
+      </button>
+      <div class="hud-body" id="hudBody">
+        <p class="intro">安全な撮影地点から列車を中心に見回せるパノラマ集です。</p>
+        <p class="tips"><strong>移動:</strong> WASD / 矢印 / 右下カーソルで視点移動。ドラッグでも見回せます。</p>
+        <p class="tips"><strong>補足:</strong> + / - でズーム、Enter か「正面に戻す」でリセットできます。</p>
+        <a class="home-link" href="../">入口へ戻る</a>
+
+        <div class="scene-picker" id="scenePicker">
+          <button type="button" class="scene-chip active" data-scene-id="scene-01">Scene 01</button>
+          <button type="button" class="scene-chip" data-scene-id="scene-02">Scene 02</button>
+          <button type="button" class="scene-chip" data-scene-id="scene-03">Scene 03</button>
+        </div>
+
+        <div class="legend" id="legend"></div>
+
+        <div class="controls">
+          <button type="button" id="resetView">正面に戻す</button>
+          <button type="button" class="ghost" id="toggleAutoRotate">ゆっくり回す</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="pad" aria-label="view controls">
+      <span class="pad-spacer"></span>
+      <button type="button" class="ghost" data-move="up" aria-label="up">▲</button>
+      <span class="pad-spacer"></span>
+      <button type="button" class="ghost" data-move="left" aria-label="left">◀</button>
+      <button type="button" class="ghost" data-move="center" aria-label="reset">●</button>
+      <button type="button" class="ghost" data-move="right" aria-label="right">▶</button>
+      <span class="pad-spacer"></span>
+      <button type="button" class="ghost" data-move="down" aria-label="down">▼</button>
+      <span class="pad-spacer"></span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <script>
+      const sceneCatalog = {
+        "scene-01": {
+          file: "scene-01-hayabusa-komachi.png",
+          legend: [
+            { dir: "中", title: "はやぶさ＋こまち", detail: "夕景の連結走行カット" },
+            { dir: "左", title: "田園撮影地", detail: "フェンス外の安全な三脚スポット" },
+            { dir: "右", title: "夕焼け待機列", detail: "望遠で狙う撮り鉄たち" }
+          ]
+        },
+        "scene-02": {
+          file: "scene-02-kagayaki.png",
+          legend: [
+            { dir: "中", title: "かがやき", detail: "雪山と高架駅を抜ける白い車体" },
+            { dir: "左", title: "冬の展望デッキ", detail: "雪面反射の明るい撮影ポイント" },
+            { dir: "右", title: "駅前俯瞰", detail: "北陸らしい山並みと駅舎" }
+          ]
+        },
+        "scene-03": {
+          file: "scene-03-night-hayabusa-transport.png",
+          legend: [
+            { dir: "中", title: "夜間はやぶさ輸送", detail: "作業灯に浮かぶ静かな搬送シーン" },
+            { dir: "左", title: "路肩待機", detail: "濡れた道路と安全距離を保った車内視点" },
+            { dir: "右", title: "追跡ムード", detail: "車窓越しに見る夜の鉄道回送" }
+          ]
+        }
+      };
+
+      const buildLegendMarkup = (items) =>
+        items
+          .map(
+            (item) => `
+              <div class="legend-item">
+                <div class="dir">${item.dir}</div>
+                <div>
+                  <strong>${item.title}</strong>
+                  <span>${item.detail}</span>
+                </div>
+              </div>
+            `
+          )
+          .join("");
+
+      const getViewportProfile = () => {
+        const isPortraitPhone = window.matchMedia("(max-width: 700px) and (orientation: portrait)").matches;
+        if (isPortraitPhone) {
+          return { hfov: 82, minHfov: 48, maxHfov: 96 };
+        }
+        return { hfov: 110, minHfov: 50, maxHfov: 130 };
+      };
+
+      const viewportProfile = getViewportProfile();
+      const viewer = pannellum.viewer("viewer", {
+        default: {
+          firstScene: "scene-01",
+          autoLoad: true,
+          sceneFadeDuration: 400
+        },
+        scenes: {
+          "scene-01": {
+            type: "equirectangular",
+            panorama: "./scene-01-hayabusa-komachi.png"
+          },
+          "scene-02": {
+            type: "equirectangular",
+            panorama: "./scene-02-kagayaki.png"
+          },
+          "scene-03": {
+            type: "equirectangular",
+            panorama: "./scene-03-night-hayabusa-transport.png"
+          }
+        },
+        autoLoad: true,
+        showControls: true,
+        compass: false,
+        mouseZoom: true,
+        draggable: true,
+        hfov: viewportProfile.hfov,
+        minHfov: viewportProfile.minHfov,
+        maxHfov: viewportProfile.maxHfov,
+        pitch: 0,
+        yaw: 0
+      });
+      window.panoramaViewer = viewer;
+
+      const legendRoot = document.getElementById("legend");
+      const hud = document.getElementById("hud");
+      const hudToggle = document.getElementById("hudToggle");
+      const sceneButtons = Array.from(document.querySelectorAll(".scene-chip"));
+      const moveButtons = Array.from(document.querySelectorAll("[data-move]"));
+      const resetButton = document.getElementById("resetView");
+      const rotateButton = document.getElementById("toggleAutoRotate");
+      let currentSceneId = "scene-01";
+      let isAutoRotating = false;
+
+      const moveStep = { yaw: 12, pitch: 8, hfov: 8 };
+      const clampPitch = (value) => Math.max(-85, Math.min(85, value));
+      const clampHfov = (value) => {
+        const profile = getViewportProfile();
+        return Math.max(profile.minHfov, Math.min(profile.maxHfov, value));
+      };
+
+      const stopRotation = () => {
+        viewer.stopAutoRotate();
+        isAutoRotating = false;
+        rotateButton.textContent = "ゆっくり回す";
+      };
+
+      const resetView = () => {
+        stopRotation();
+        const profile = getViewportProfile();
+        viewer.setPitch(0, 600);
+        viewer.setYaw(0, 600);
+        viewer.setHfov(profile.hfov, 600);
+      };
+
+      const nudgeView = (direction) => {
+        stopRotation();
+        if (direction === "left") {
+          viewer.setYaw(viewer.getYaw() - moveStep.yaw);
+        }
+        if (direction === "right") {
+          viewer.setYaw(viewer.getYaw() + moveStep.yaw);
+        }
+        if (direction === "up") {
+          viewer.setPitch(clampPitch(viewer.getPitch() + moveStep.pitch));
+        }
+        if (direction === "down") {
+          viewer.setPitch(clampPitch(viewer.getPitch() - moveStep.pitch));
+        }
+        if (direction === "zoomIn") {
+          viewer.setHfov(clampHfov(viewer.getHfov() - moveStep.hfov));
+        }
+        if (direction === "zoomOut") {
+          viewer.setHfov(clampHfov(viewer.getHfov() + moveStep.hfov));
+        }
+      };
+
+      const renderSceneMeta = (sceneId) => {
+        legendRoot.innerHTML = buildLegendMarkup(sceneCatalog[sceneId].legend);
+        sceneButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.sceneId === sceneId);
+        });
+      };
+
+      renderSceneMeta(currentSceneId);
+
+      if (window.matchMedia("(max-width: 700px) and (orientation: portrait)").matches) {
+        hud.classList.add("collapsed");
+        hudToggle.setAttribute("aria-expanded", "false");
+      }
+
+      hudToggle.addEventListener("click", () => {
+        const isCollapsed = hud.classList.toggle("collapsed");
+        hudToggle.setAttribute("aria-expanded", String(!isCollapsed));
+      });
+
+      resetButton.addEventListener("click", resetView);
+
+      rotateButton.addEventListener("click", () => {
+        isAutoRotating = !isAutoRotating;
+        if (isAutoRotating) {
+          viewer.startAutoRotate(2);
+          rotateButton.textContent = "回転を止める";
+          return;
+        }
+        stopRotation();
+      });
+
+      sceneButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const nextSceneId = button.dataset.sceneId;
+          if (nextSceneId === currentSceneId) {
+            return;
+          }
+          stopRotation();
+          currentSceneId = nextSceneId;
+          viewer.loadScene(nextSceneId, 0, 0, getViewportProfile().hfov);
+          renderSceneMeta(nextSceneId);
+        });
+      });
+
+      moveButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const direction = button.dataset.move;
+          if (direction === "center") {
+            resetView();
+            return;
+          }
+          nudgeView(direction);
+        });
+      });
+
+      document.addEventListener("keydown", (event) => {
+        const key = event.key.toLowerCase();
+        const handledKeys = {
+          w: "up",
+          a: "left",
+          s: "down",
+          d: "right",
+          arrowup: "up",
+          arrowleft: "left",
+          arrowdown: "down",
+          arrowright: "right",
+          "+": "zoomIn",
+          "=": "zoomIn",
+          "-": "zoomOut",
+          _: "zoomOut"
+        };
+
+        if (key === "enter" || key === "0") {
+          event.preventDefault();
+          resetView();
+          return;
+        }
+
+        if (!handledKeys[key]) {
+          return;
+        }
+
+        event.preventDefault();
+        nudgeView(handledKeys[key]);
+      });
+    </script>
+  </body>
+</html>
