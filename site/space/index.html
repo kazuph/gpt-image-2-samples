@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>新幹線撮り鉄 360 Panorama</title>
+    <title>宇宙観測 360 Panorama</title>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1016'/%3E%3Cpath d='M10 38h44L44 22H20z' fill='%23f5f7fa'/%3E%3Cpath d='M12 40h40' stroke='%23ffd24d' stroke-width='5'/%3E%3C/svg%3E"
@@ -316,10 +316,10 @@
 
     <aside class="hud" id="hud">
       <button type="button" class="hud-toggle" id="hudToggle" aria-expanded="true">
-        <h1>新幹線撮り鉄360°ビュー</h1>
+        <h1>宇宙観測360°ビュー</h1>
       </button>
       <div class="hud-body" id="hudBody">
-        <p class="intro">安全な撮影地点から列車を中心に見回せるパノラマ集です。</p>
+        <p class="intro">観測衛星の外部カメラ視点で、宇宙の絶景を見回せるパノラマ集です。</p>
         <p class="tips"><strong>移動:</strong> WASD / 矢印 / 右下カーソルで視点移動。ドラッグでも見回せます。</p>
         <p class="tips"><strong>補足:</strong> + / - でズーム、Enter か「正面に戻す」でリセットできます。</p>
         <a class="home-link" href="../">入口へ戻る</a>
@@ -328,6 +328,7 @@
           <button type="button" class="scene-chip active" data-scene-id="scene-01">Scene 01</button>
           <button type="button" class="scene-chip" data-scene-id="scene-02">Scene 02</button>
           <button type="button" class="scene-chip" data-scene-id="scene-03">Scene 03</button>
+          <button type="button" class="scene-chip" data-scene-id="scene-04">Scene 04</button>
         </div>
 
         <div class="legend" id="legend"></div>
@@ -355,27 +356,35 @@
     <script>
       const sceneCatalog = {
         "scene-01": {
-          file: "scene-01-hayabusa-komachi.png",
+          file: "scene-01-space-station.png",
           legend: [
-            { dir: "中", title: "はやぶさ＋こまち", detail: "夕景の連結走行カット" },
-            { dir: "左", title: "田園撮影地", detail: "フェンス外の安全な三脚スポット" },
-            { dir: "右", title: "夕焼け待機列", detail: "望遠で狙う撮り鉄たち" }
+            { dir: "中", title: "宇宙ステーション", detail: "地球の縁光を浴びる外部カメラ視点" },
+            { dir: "左", title: "太陽電池翼", detail: "巨大なパネルと構造物の奥行き" },
+            { dir: "右", title: "青い地球", detail: "雲と大気が広がる低軌道の絶景" }
           ]
         },
         "scene-02": {
-          file: "scene-02-kagayaki.png",
+          file: "scene-02-jupiter-observer.png",
           legend: [
-            { dir: "中", title: "かがやき", detail: "雪山と高架駅を抜ける白い車体" },
-            { dir: "左", title: "冬の展望デッキ", detail: "雪面反射の明るい撮影ポイント" },
-            { dir: "右", title: "駅前俯瞰", detail: "北陸らしい山並みと駅舎" }
+            { dir: "中", title: "木星観測衛星", detail: "縞模様と巨大嵐を正面に捉える視点" },
+            { dir: "左", title: "氷衛星の縁", detail: "衛星表面と探査機構造の近接感" },
+            { dir: "右", title: "観測ブーム", detail: "アンテナと計測機器が伸びる船外視点" }
           ]
         },
         "scene-03": {
-          file: "scene-03-night-hayabusa-transport.png",
+          file: "scene-03-saturn-observer.png",
           legend: [
-            { dir: "中", title: "夜間はやぶさ道路輸送", detail: "大型トレーラーに載った搬送シーン" },
-            { dir: "左", title: "路肩待機", detail: "濡れた道路と安全距離を保った停車視点" },
-            { dir: "右", title: "護送車列", detail: "警告灯と作業灯に照らされた夜の道路" }
+            { dir: "中", title: "土星観測衛星", detail: "環が空を横切る優雅な観測シーン" },
+            { dir: "左", title: "氷の月", detail: "リングシャドウと衛星地形の対比" },
+            { dir: "右", title: "深宇宙の星野", detail: "探査機パネル越しの静かな宇宙" }
+          ]
+        },
+        "scene-04": {
+          file: "scene-04-solar-probe.png",
+          legend: [
+            { dir: "中", title: "太陽付近観測衛星", detail: "仮想の遮熱シールド越しに見る太陽" },
+            { dir: "左", title: "コロナの流れ", detail: "磁力線のように広がるプラズマ" },
+            { dir: "右", title: "仮想ミッション", detail: "近太陽観測をゲーム的に体験する視点" }
           ]
         }
       };
@@ -413,15 +422,19 @@
         scenes: {
           "scene-01": {
             type: "equirectangular",
-            panorama: "./scene-01-hayabusa-komachi.png"
+            panorama: "./scene-01-space-station.png"
           },
           "scene-02": {
             type: "equirectangular",
-            panorama: "./scene-02-kagayaki.png"
+            panorama: "./scene-02-jupiter-observer.png"
           },
           "scene-03": {
             type: "equirectangular",
-            panorama: "./scene-03-night-hayabusa-transport.png"
+            panorama: "./scene-03-saturn-observer.png"
+          },
+          "scene-04": {
+            type: "equirectangular",
+            panorama: "./scene-04-solar-probe.png"
           }
         },
         autoLoad: true,

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>新幹線撮り鉄 360 Panorama</title>
+    <title>絶景パルクール 360 Panorama</title>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1016'/%3E%3Cpath d='M10 38h44L44 22H20z' fill='%23f5f7fa'/%3E%3Cpath d='M12 40h40' stroke='%23ffd24d' stroke-width='5'/%3E%3C/svg%3E"
@@ -316,10 +316,10 @@
 
     <aside class="hud" id="hud">
       <button type="button" class="hud-toggle" id="hudToggle" aria-expanded="true">
-        <h1>新幹線撮り鉄360°ビュー</h1>
+        <h1>絶景パルクール360°ビュー</h1>
       </button>
       <div class="hud-body" id="hudBody">
-        <p class="intro">安全な撮影地点から列車を中心に見回せるパノラマ集です。</p>
+        <p class="intro">凄腕ランナー視点で、絶景ルートを見回せるゲーム風パノラマ集です。</p>
         <p class="tips"><strong>移動:</strong> WASD / 矢印 / 右下カーソルで視点移動。ドラッグでも見回せます。</p>
         <p class="tips"><strong>補足:</strong> + / - でズーム、Enter か「正面に戻す」でリセットできます。</p>
         <a class="home-link" href="../">入口へ戻る</a>
@@ -355,27 +355,27 @@
     <script>
       const sceneCatalog = {
         "scene-01": {
-          file: "scene-01-hayabusa-komachi.png",
+          file: "scene-01-coastal-rooftop.png",
           legend: [
-            { dir: "中", title: "はやぶさ＋こまち", detail: "夕景の連結走行カット" },
-            { dir: "左", title: "田園撮影地", detail: "フェンス外の安全な三脚スポット" },
-            { dir: "右", title: "夕焼け待機列", detail: "望遠で狙う撮り鉄たち" }
+            { dir: "中", title: "海沿い屋上", detail: "朝焼けの街を見下ろす主役ルート" },
+            { dir: "左", title: "港町の迷路", detail: "屋根と路地が連なる移動ライン" },
+            { dir: "右", title: "次の足場", detail: "広い屋上へつながるゲーム的導線" }
           ]
         },
         "scene-02": {
-          file: "scene-02-kagayaki.png",
+          file: "scene-02-canyon-skybridge.png",
           legend: [
-            { dir: "中", title: "かがやき", detail: "雪山と高架駅を抜ける白い車体" },
-            { dir: "左", title: "冬の展望デッキ", detail: "雪面反射の明るい撮影ポイント" },
-            { dir: "右", title: "駅前俯瞰", detail: "北陸らしい山並みと駅舎" }
+            { dir: "中", title: "峡谷スカイブリッジ", detail: "岩壁を渡る絶景アスレチック" },
+            { dir: "左", title: "滝の回廊", detail: "霧と水音に包まれた横移動ルート" },
+            { dir: "右", title: "石塔の足場", detail: "高低差を見せる冒険ゲーム視点" }
           ]
         },
         "scene-03": {
-          file: "scene-03-night-hayabusa-transport.png",
+          file: "scene-03-neon-megacity.png",
           legend: [
-            { dir: "中", title: "夜間はやぶさ道路輸送", detail: "大型トレーラーに載った搬送シーン" },
-            { dir: "左", title: "路肩待機", detail: "濡れた道路と安全距離を保った停車視点" },
-            { dir: "右", title: "護送車列", detail: "警告灯と作業灯に照らされた夜の道路" }
+            { dir: "中", title: "ネオン高層街", detail: "雨の屋上から見渡す夜景ルート" },
+            { dir: "左", title: "サービスデッキ", detail: "蒸気と反射が作る走行ライン" },
+            { dir: "右", title: "次のビル影", detail: "短いギャップ越しの目標地点" }
           ]
         }
       };
@@ -413,15 +413,15 @@
         scenes: {
           "scene-01": {
             type: "equirectangular",
-            panorama: "./scene-01-hayabusa-komachi.png"
+            panorama: "./scene-01-coastal-rooftop.png"
           },
           "scene-02": {
             type: "equirectangular",
-            panorama: "./scene-02-kagayaki.png"
+            panorama: "./scene-02-canyon-skybridge.png"
           },
           "scene-03": {
             type: "equirectangular",
-            panorama: "./scene-03-night-hayabusa-transport.png"
+            panorama: "./scene-03-neon-megacity.png"
           }
         },
         autoLoad: true,

@@ -22,3 +22,5 @@ Open `http://127.0.0.1:8765/` after the server starts.
 - `site/index.html`: collection entrance page.
 - `site/comike/`: six centered-character Comiket camera-kid panorama scenes.
 - `site/shinkansen/`: three railway-photography panorama scenes.
+- `site/parkour/`: three first-person scenic parkour panorama scenes.
+- `site/space/`: four space-observation panorama scenes.
