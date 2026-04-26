@@ -19,6 +19,9 @@
         --cyan: #8fefff;
         --red: #ff5d5d;
         --blue: #8aa7ff;
+        --apricot: #ffd1a7;
+        --leaf: #a9d68a;
+        --rain: #9fc7ff;
       }
 
       * {
@@ -154,6 +157,18 @@
 
       .character[data-tone="mio"] {
         --accent: var(--cyan);
+      }
+
+      .character[data-tone="anzu"] {
+        --accent: var(--apricot);
+      }
+
+      .character[data-tone="hiyori"] {
+        --accent: var(--leaf);
+      }
+
+      .character[data-tone="kazami"] {
+        --accent: var(--rain);
       }
 
       .character[data-tone="ririka"] {
@@ -298,17 +313,128 @@
           <p class="eyebrow">VTuber character lab</p>
           <h1 id="page-title">同じキャラを、配信・ライブ・ゲームまで育てる。</h1>
           <p class="lead">
-            まずは3キャラの試作です。キャラシートで見た目を固定し、配信画面、アイドル系Vらしい3Dライブ、
+            まずは6キャラの試作です。キャラシートで見た目を固定し、配信画面、アイドル系Vらしい3Dライブ、
             そして「その子ならこういうゲームになる」という解釈まで、1キャラ4枚で並べています。
           </p>
           <nav class="nav" aria-label="characters">
+            <a href="#anzu">白庭あんず</a>
+            <a href="#hiyori">小森日和</a>
+            <a href="#kazami">風見しおり</a>
             <a href="#mio">月城ミオ</a>
             <a href="#ririka">朱音リリカ</a>
             <a href="#noa">星海ノア</a>
           </nav>
         </div>
         <div class="hero-card" aria-label="featured visual">
-          <img src="./mio-live.jpg?v=2" alt="月城ミオの3Dライブキービジュアル">
+          <img src="./anzu-stream.jpg?v=1" alt="白庭あんずの配信画面キービジュアル">
+        </div>
+      </section>
+
+      <section id="anzu" class="character" data-tone="anzu" aria-labelledby="anzu-title">
+        <div class="profile">
+          <div>
+            <p class="eyebrow">soft bakery garden streamer</p>
+            <h2 id="anzu-title">白庭あんず</h2>
+            <p>
+              近所のベーカリーと小さな庭が似合う、やわらかい日常系V。朝配信や料理雑談が軸で、
+              ゲーム化するとパンを届けながら街の人を助ける、ベーカリー経営アドベンチャーになります。
+            </p>
+            <div class="meta">
+              <span class="chip">あんず色ボブ</span>
+              <span class="chip">ベーカリー雑談</span>
+              <span class="chip">生活系ADV</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery">
+          <figure class="tile">
+            <a href="./anzu-character-sheet.jpg?v=1"><img src="./anzu-character-sheet.jpg?v=1" alt="白庭あんずのキャラクターシート"></a>
+            <figcaption><strong>キャラシート</strong><span>クリーム色の服と花飾りで、日常寄りの輪郭を固定。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./anzu-stream.jpg?v=1"><img src="./anzu-stream.jpg?v=1" alt="白庭あんずのVTuber配信画面"></a>
+            <figcaption><strong>配信画面</strong><span>朝のベーカリーカフェで、穏やかに雑談する画面。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./anzu-live.jpg?v=1"><img src="./anzu-live.jpg?v=1" alt="白庭あんずの3Dライブ"></a>
+            <figcaption><strong>3Dライブ</strong><span>花とランタンに囲まれた、小劇場サイズのファンイベント。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./anzu-game.jpg?v=1"><img src="./anzu-game.jpg?v=1" alt="白庭あんずが活躍するゲーム画面"></a>
+            <figcaption><strong>ゲーム化</strong><span>パン作りと配達で街を少しずつ明るくする生活ゲーム。</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="hiyori" class="character" data-tone="hiyori" aria-labelledby="hiyori-title">
+        <div class="profile">
+          <div>
+            <p class="eyebrow">forest notebook daily streamer</p>
+            <h2 id="hiyori-title">小森日和</h2>
+            <p>
+              森歩きとフィールドノートが好きな、落ち着いた写真散歩系V。ゲーム化すると小さな森の町を歩き、
+              草花や動物を撮影して図鑑を埋めるスローライフ探索になります。
+            </p>
+            <div class="meta">
+              <span class="chip">オリーブ髪</span>
+              <span class="chip">写真散歩</span>
+              <span class="chip">森探索ゲーム</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery">
+          <figure class="tile">
+            <a href="./hiyori-character-sheet.jpg?v=1"><img src="./hiyori-character-sheet.jpg?v=1" alt="小森日和のキャラクターシート"></a>
+            <figcaption><strong>キャラシート</strong><span>フーディとロングスカートで、自然体の配信者感を固定。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./hiyori-stream.jpg?v=1"><img src="./hiyori-stream.jpg?v=1" alt="小森日和のVTuber配信画面"></a>
+            <figcaption><strong>配信画面</strong><span>植物と写真に囲まれた、静かな作業・雑談配信。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./hiyori-live.jpg?v=1"><img src="./hiyori-live.jpg?v=1" alt="小森日和の3Dライブ"></a>
+            <figcaption><strong>3Dライブ</strong><span>木漏れ日の小さなステージで歌う、アコースティック寄りのライブ。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./hiyori-game.jpg?v=1"><img src="./hiyori-game.jpg?v=1" alt="小森日和が活躍するゲーム画面"></a>
+            <figcaption><strong>ゲーム化</strong><span>カメラと手帳で森の発見を集める写真探索ゲーム。</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="kazami" class="character" data-tone="kazami" aria-labelledby="kazami-title">
+        <div class="profile">
+          <div>
+            <p class="eyebrow">rainy city reading streamer</p>
+            <h2 id="kazami-title">風見しおり</h2>
+            <p>
+              雨の日の読書と街歩きが似合う、天気トーク系V。ゲーム化すると雨の街を歩きながら、
+              風鈴で天気を変えて本に隠れた記憶を解くナラティブパズルになります。
+            </p>
+            <div class="meta">
+              <span class="chip">紺色ボブ</span>
+              <span class="chip">読書と天気</span>
+              <span class="chip">雨街パズル</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery">
+          <figure class="tile">
+            <a href="./kazami-character-sheet.jpg?v=1"><img src="./kazami-character-sheet.jpg?v=1" alt="風見しおりのキャラクターシート"></a>
+            <figcaption><strong>キャラシート</strong><span>風鈴飾りと本の小物で、静かな街歩き感を固定。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./kazami-stream.jpg?v=1"><img src="./kazami-stream.jpg?v=1" alt="風見しおりのVTuber配信画面"></a>
+            <figcaption><strong>配信画面</strong><span>雨音と読書が中心の、夜の落ち着いた配信画面。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./kazami-live.jpg?v=1"><img src="./kazami-live.jpg?v=1" alt="風見しおりの3Dライブ"></a>
+            <figcaption><strong>3Dライブ</strong><span>雨窓と風鈴ライトの、小さな朗読ライブ風ステージ。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./kazami-game.jpg?v=1"><img src="./kazami-game.jpg?v=1" alt="風見しおりが活躍するゲーム画面"></a>
+            <figcaption><strong>ゲーム化</strong><span>天気を変えながら記憶をほどく、雨街ナラティブパズル。</span></figcaption>
+          </figure>
         </div>
       </section>
 

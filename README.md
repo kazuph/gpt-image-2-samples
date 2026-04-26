@@ -20,7 +20,7 @@ Open `http://127.0.0.1:8765/` after the server starts.
 ## Contents
 
 - `site/index.html`: collection entrance page.
-- `site/vtuber/`: three VTuber character prototypes with character sheets, stream screens, 3D live visuals, and character-specific game mockups.
+- `site/vtuber/`: six VTuber character prototypes with character sheets, stream screens, 3D live visuals, and character-specific game mockups.
 - `site/comike/`: six centered-character Comiket camera-kid panorama scenes.
 - `site/shinkansen/`: three railway-photography panorama scenes.
 - `site/parkour/`: three first-person scenic parkour panorama scenes.
