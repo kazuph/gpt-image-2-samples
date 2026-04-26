@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>360 Panorama Samples</title>
+    <title>GPT Image 2 Samples</title>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1016'/%3E%3Ccircle cx='32' cy='32' r='18' fill='%23ffd24d'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%230b1016'/%3E%3C/svg%3E"
@@ -67,11 +67,62 @@
         line-height: 1.75;
       }
 
+      .feature {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 430px);
+        gap: 22px;
+        align-items: end;
+        min-height: 330px;
+        margin-top: 34px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        color: var(--text);
+        text-decoration: none;
+        background:
+          radial-gradient(circle at 16% 8%, rgba(143, 239, 255, 0.28), transparent 22rem),
+          radial-gradient(circle at 88% 18%, rgba(255, 93, 93, 0.20), transparent 22rem),
+          rgba(12, 17, 23, 0.76);
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.34);
+      }
+
+      .feature-content {
+        z-index: 1;
+        padding: 30px;
+      }
+
+      .feature h2 {
+        max-width: 720px;
+        margin: 14px 0 0;
+        font-size: clamp(34px, 5vw, 62px);
+        line-height: 0.98;
+        letter-spacing: -0.06em;
+      }
+
+      .feature p {
+        max-width: 680px;
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .feature img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 280px;
+        object-fit: cover;
+        border-left: 1px solid var(--line);
+        mask-image: linear-gradient(90deg, transparent 0%, black 22%);
+      }
+
       .grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
-        margin-top: 34px;
+        margin-top: 18px;
       }
 
       .card {
@@ -156,6 +207,21 @@
           padding: 34px 0;
         }
 
+        .feature {
+          grid-template-columns: 1fr;
+        }
+
+        .feature-content {
+          padding: 22px;
+        }
+
+        .feature img {
+          min-height: 220px;
+          border-top: 1px solid var(--line);
+          border-left: 0;
+          mask-image: none;
+        }
+
         .grid {
           grid-template-columns: 1fr;
         }
@@ -168,11 +234,23 @@
   </head>
   <body>
     <main>
-      <p class="eyebrow">360 panorama collection</p>
-      <h1>ぐりぐり見回せる撮影ゲーム画面サンプル</h1>
+      <p class="eyebrow">image generation samples</p>
+      <h1>画像生成で遊ぶゲーム画面サンプル集</h1>
       <p class="lead">
-        テーマごとにパノラマを分けました。入口から見たいシリーズを選ぶと、各ビューアでシーンを即切り替えできます。
+        360度ビューに加えて、キャラクター設計やゲーム画面風キービジュアルも置いていきます。
+        入口から見たいシリーズを選ぶと、それぞれのビューアやギャラリーへ移動できます。
       </p>
+
+      <a class="feature" href="./vtuber/">
+        <div class="feature-content">
+          <span class="tag">12 images</span>
+          <h2>VTuberキャラクターラボ</h2>
+          <p>
+            同じキャラをキャラシート、配信画面、3Dライブ、専用ゲーム化まで展開する非パノラマの試作ギャラリー。
+          </p>
+        </div>
+        <img src="./vtuber/mio-live.jpg" alt="VTuberキャラクターラボの3Dライブ作例">
+      </a>
 
       <section class="grid" aria-label="sample collections">
         <a class="card" href="./shinkansen/" style="--cover: url('./shinkansen/scene-01-hayabusa-komachi.png')">

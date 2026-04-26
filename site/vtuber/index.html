@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VTuber Character Lab</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23090a13'/%3E%3Cpath d='M12 42c10-22 30-22 40 0-13-8-27-8-40 0Z' fill='%23ffdf7f'/%3E%3Ccircle cx='32' cy='26' r='11' fill='%239cecff'/%3E%3C/svg%3E"
+    >
+    <style>
+      :root {
+        --bg: #090a13;
+        --ink: #fff8e8;
+        --muted: #b9bfd0;
+        --line: rgba(255, 255, 255, 0.15);
+        --panel: rgba(16, 18, 32, 0.78);
+        --gold: #ffdf7f;
+        --cyan: #8fefff;
+        --red: #ff5d5d;
+        --blue: #8aa7ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+        background:
+          radial-gradient(circle at 15% 10%, rgba(143, 239, 255, 0.22), transparent 27rem),
+          radial-gradient(circle at 84% 6%, rgba(255, 93, 93, 0.18), transparent 28rem),
+          radial-gradient(circle at 55% 96%, rgba(138, 167, 255, 0.18), transparent 34rem),
+          linear-gradient(135deg, #090a13 0%, #11111f 48%, #17101a 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: linear-gradient(180deg, black, transparent 78%);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(1240px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 72px;
+      }
+
+      .back {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 28px;
+        color: var(--muted);
+        font: 700 13px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+        text-decoration: none;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+        gap: 28px;
+        align-items: end;
+        min-height: 420px;
+        padding: clamp(28px, 5vw, 58px);
+        border: 1px solid var(--line);
+        border-radius: 36px;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.02)),
+          var(--panel);
+        box-shadow: 0 40px 110px rgba(0, 0, 0, 0.36);
+        backdrop-filter: blur(18px);
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--gold);
+        font: 900 12px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 790px;
+        margin: 0;
+        font-size: clamp(38px, 7vw, 86px);
+        line-height: 0.94;
+        letter-spacing: -0.08em;
+      }
+
+      .lead {
+        max-width: 720px;
+        margin: 22px 0 0;
+        color: var(--muted);
+        font: 500 15px/1.9 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      .hero-card {
+        display: grid;
+        gap: 10px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(0, 0, 0, 0.28);
+      }
+
+      .hero-card img {
+        width: 100%;
+        border-radius: 18px;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 22px 0 0;
+      }
+
+      .nav a {
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        font: 800 13px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+        text-decoration: none;
+      }
+
+      .character {
+        margin-top: 34px;
+        padding: clamp(20px, 4vw, 34px);
+        border: 1px solid var(--line);
+        border-radius: 34px;
+        background: rgba(255, 255, 255, 0.055);
+      }
+
+      .character[data-tone="mio"] {
+        --accent: var(--cyan);
+      }
+
+      .character[data-tone="ririka"] {
+        --accent: var(--red);
+      }
+
+      .character[data-tone="noa"] {
+        --accent: var(--blue);
+      }
+
+      .profile {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: end;
+        margin-bottom: 18px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(30px, 4.8vw, 58px);
+        line-height: 1;
+        letter-spacing: -0.06em;
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .chip {
+        padding: 8px 10px;
+        border: 1px solid color-mix(in srgb, var(--accent), white 12%);
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--accent), transparent 82%);
+        color: #fff;
+        font: 800 12px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      .profile p {
+        max-width: 760px;
+        margin: 14px 0 0;
+        color: var(--muted);
+        font: 500 14px/1.8 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .tile {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(0, 0, 0, 0.28);
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.26);
+      }
+
+      .tile a {
+        display: block;
+      }
+
+      .tile img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        transition: transform 260ms ease, filter 260ms ease;
+      }
+
+      .tile:hover img,
+      .tile:focus-within img {
+        filter: saturate(1.12) contrast(1.03);
+        transform: scale(1.045);
+      }
+
+      .tile figcaption {
+        padding: 14px 14px 16px;
+      }
+
+      .tile strong {
+        display: block;
+        color: var(--accent);
+        font: 900 14px/1.2 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      .tile span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font: 500 12px/1.55 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .profile {
+          grid-template-columns: 1fr;
+        }
+
+        .gallery {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 580px) {
+        .shell {
+          width: min(100% - 20px, 1240px);
+          padding-bottom: 42px;
+        }
+
+        .hero,
+        .character {
+          border-radius: 24px;
+        }
+
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <a class="back" href="../">← サンプル入口へ戻る</a>
+
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">VTuber character lab</p>
+          <h1 id="page-title">同じキャラを、配信・ライブ・ゲームまで育てる。</h1>
+          <p class="lead">
+            まずは3キャラの試作です。キャラシートで見た目を固定し、配信画面、アイドル系Vらしい3Dライブ、
+            そして「その子ならこういうゲームになる」という解釈まで、1キャラ4枚で並べています。
+          </p>
+          <nav class="nav" aria-label="characters">
+            <a href="#mio">月城ミオ</a>
+            <a href="#ririka">朱音リリカ</a>
+            <a href="#noa">星海ノア</a>
+          </nav>
+        </div>
+        <div class="hero-card" aria-label="featured visual">
+          <img src="./mio-live.jpg" alt="月城ミオの3Dライブキービジュアル">
+        </div>
+      </section>
+
+      <section id="mio" class="character" data-tone="mio" aria-labelledby="mio-title">
+        <div class="profile">
+          <div>
+            <p class="eyebrow">cyber shrine moon rabbit</p>
+            <h2 id="mio-title">月城ミオ</h2>
+            <p>
+              月兎モチーフのサイバー巫女アイドル。やさしい雑談と音楽配信が軸で、ゲーム化すると
+              月夜の電脳神社をリズムで浄化する弾幕音ゲーになるタイプです。
+            </p>
+            <div class="meta">
+              <span class="chip">銀髪ツインテール</span>
+              <span class="chip">月兎ヘッドセット</span>
+              <span class="chip">リズム弾幕</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery">
+          <figure class="tile">
+            <a href="./mio-character-sheet.jpg"><img src="./mio-character-sheet.jpg" alt="月城ミオのキャラクターシート"></a>
+            <figcaption><strong>キャラシート</strong><span>衣装・表情・シルエットを固定する設計画。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./mio-stream.jpg"><img src="./mio-stream.jpg" alt="月城ミオのVTuber配信画面"></a>
+            <figcaption><strong>配信画面</strong><span>月明かりの神社スタジオで雑談と音楽配信。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./mio-live.jpg"><img src="./mio-live.jpg" alt="月城ミオの3Dライブ"></a>
+            <figcaption><strong>3Dライブ</strong><span>光の鳥居と月兎ドローンが舞うアイドルステージ。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./mio-game.jpg"><img src="./mio-game.jpg" alt="月城ミオが活躍するゲーム画面"></a>
+            <figcaption><strong>ゲーム化</strong><span>音符弾幕を踊って避けるリズムアクション。</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="ririka" class="character" data-tone="ririka" aria-labelledby="ririka-title">
+        <div class="profile">
+          <div>
+            <p class="eyebrow">crimson demon rock idol</p>
+            <h2 id="ririka-title">朱音リリカ</h2>
+            <p>
+              紅蓮のロック悪魔アイドル。煽り上手で歌枠が強く、ゲーム化するとマイクとギターリフで
+              影の観客をなぎ倒すステージアクションになります。
+            </p>
+            <div class="meta">
+              <span class="chip">紅髪ロング</span>
+              <span class="chip">小悪魔ホーン</span>
+              <span class="chip">ライブアクション</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery">
+          <figure class="tile">
+            <a href="./ririka-character-sheet.jpg"><img src="./ririka-character-sheet.jpg" alt="朱音リリカのキャラクターシート"></a>
+            <figcaption><strong>キャラシート</strong><span>赤黒レザーと炎ハートで一目で強い輪郭。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./ririka-stream.jpg"><img src="./ririka-stream.jpg" alt="朱音リリカのVTuber配信画面"></a>
+            <figcaption><strong>配信画面</strong><span>深夜ラジオ風のロック配信スタジオ。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./ririka-live.jpg"><img src="./ririka-live.jpg" alt="朱音リリカの3Dライブ"></a>
+            <figcaption><strong>3Dライブ</strong><span>火柱とハート型LEDで観客を燃やすライブ。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./ririka-game.jpg"><img src="./ririka-game.jpg" alt="朱音リリカが活躍するゲーム画面"></a>
+            <figcaption><strong>ゲーム化</strong><span>コンボとシャウトで戦うローグライト風アクション。</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="noa" class="character" data-tone="noa" aria-labelledby="noa-title">
+        <div class="profile">
+          <div>
+            <p class="eyebrow">deep sea stargazer healer</p>
+            <h2 id="noa-title">星海ノア</h2>
+            <p>
+              深海と星空をつなぐヒーリング系アイドル。ASMRや作業用BGMが似合い、ゲーム化すると
+              水没した星見台を探索して、失われた星座を音で癒やすアドベンチャーになります。
+            </p>
+            <div class="meta">
+              <span class="chip">アクア髪</span>
+              <span class="chip">クラゲの光輪</span>
+              <span class="chip">探索ADV</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery">
+          <figure class="tile">
+            <a href="./noa-character-sheet.jpg"><img src="./noa-character-sheet.jpg" alt="星海ノアのキャラクターシート"></a>
+            <figcaption><strong>キャラシート</strong><span>深海・天文・癒やしを衣装ディテールに集約。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./noa-stream.jpg"><img src="./noa-stream.jpg" alt="星海ノアのVTuber配信画面"></a>
+            <figcaption><strong>配信画面</strong><span>水中観測ドームで眠れる音楽と雑談。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./noa-live.jpg"><img src="./noa-live.jpg" alt="星海ノアの3Dライブ"></a>
+            <figcaption><strong>3Dライブ</strong><span>星のクラゲと光る鯨が漂う幻想ステージ。</span></figcaption>
+          </figure>
+          <figure class="tile">
+            <a href="./noa-game.jpg"><img src="./noa-game.jpg" alt="星海ノアが活躍するゲーム画面"></a>
+            <figcaption><strong>ゲーム化</strong><span>水没天文台を進むメトロイドヴァニア風探索。</span></figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
