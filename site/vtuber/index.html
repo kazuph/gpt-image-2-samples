@@ -336,6 +336,36 @@
         font: 500 12px/1.55 "Hiragino Sans", "Yu Gothic", sans-serif;
       }
 
+      .video-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 12px;
+      }
+
+      .video-actions small {
+        color: color-mix(in srgb, var(--muted), transparent 12%);
+        font: 700 11px/1.4 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      .fullscreen-button {
+        appearance: none;
+        min-height: 36px;
+        padding: 0 14px;
+        border: 1px solid color-mix(in srgb, var(--gold), white 12%);
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--gold), transparent 8%);
+        color: #17130a;
+        cursor: pointer;
+        font: 900 12px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      .fullscreen-button:hover,
+      .fullscreen-button:focus-visible {
+        filter: brightness(1.08);
+      }
+
       @media (max-width: 980px) {
         .hero,
         .profile {
@@ -422,16 +452,25 @@
         </div>
         <div class="video-grid">
           <figure class="video-card">
-            <video controls preload="metadata" poster="./anzu-live.jpg?v=1" src="./videos/anzu-seedance2-audio.mp4"></video>
-            <figcaption><strong>白庭あんず</strong><span>小劇場ライブ画面から、ベーカリーガーデン風のやさしいPVへ。</span></figcaption>
+            <video controls playsinline preload="metadata" poster="./anzu-live.jpg?v=1" src="./videos/anzu-seedance2-audio.mp4"></video>
+            <figcaption>
+              <strong>白庭あんず</strong><span>小劇場ライブ画面から、ベーカリーガーデン風のやさしいPVへ。</span>
+              <div class="video-actions"><small>標準ボタンが隠れる端末向け</small><button class="fullscreen-button" type="button">全画面</button></div>
+            </figcaption>
           </figure>
           <figure class="video-card">
-            <video controls preload="metadata" poster="./hiyori-game.jpg?v=1" src="./videos/hiyori-seedance2-audio.mp4"></video>
-            <figcaption><strong>小森日和</strong><span>森の写真探索ゲーム画面から、シャッター音入りのスローライフPVへ。</span></figcaption>
+            <video controls playsinline preload="metadata" poster="./hiyori-game.jpg?v=1" src="./videos/hiyori-seedance2-audio.mp4"></video>
+            <figcaption>
+              <strong>小森日和</strong><span>森の写真探索ゲーム画面から、シャッター音入りのスローライフPVへ。</span>
+              <div class="video-actions"><small>標準ボタンが隠れる端末向け</small><button class="fullscreen-button" type="button">全画面</button></div>
+            </figcaption>
           </figure>
           <figure class="video-card">
-            <video controls preload="metadata" poster="./kazami-character-sheet.jpg?v=1" src="./videos/kazami-seedance2-audio.mp4"></video>
-            <figcaption><strong>風見しおり</strong><span>キャラシートから、雨音と風鈴の紹介PVへ。</span></figcaption>
+            <video controls playsinline preload="metadata" poster="./kazami-character-sheet.jpg?v=1" src="./videos/kazami-seedance2-audio.mp4"></video>
+            <figcaption>
+              <strong>風見しおり</strong><span>キャラシートから、雨音と風鈴の紹介PVへ。</span>
+              <div class="video-actions"><small>標準ボタンが隠れる端末向け</small><button class="fullscreen-button" type="button">全画面</button></div>
+            </figcaption>
           </figure>
         </div>
       </section>
@@ -652,5 +691,19 @@
         </div>
       </section>
     </main>
+    <script>
+      document.querySelectorAll(".fullscreen-button").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const video = button.closest(".video-card").querySelector("video");
+          if (video.webkitEnterFullscreen) {
+            video.webkitEnterFullscreen();
+            return;
+          }
+          if (video.requestFullscreen) {
+            await video.requestFullscreen();
+          }
+        });
+      });
+    </script>
   </body>
 </html>
