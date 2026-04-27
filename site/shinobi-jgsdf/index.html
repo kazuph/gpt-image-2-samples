@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>現代忍者別班 SFミリタリー構想</title>
+    <style>
+      :root {
+        --bg: #070b0d;
+        --ink: #edf4ec;
+        --muted: #aab9b1;
+        --line: rgba(179, 221, 196, 0.20);
+        --panel: rgba(8, 15, 17, 0.82);
+        --green: #78ffb2;
+        --amber: #d6b66a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+        background:
+          linear-gradient(90deg, rgba(120, 255, 178, 0.06) 1px, transparent 1px),
+          linear-gradient(rgba(120, 255, 178, 0.045) 1px, transparent 1px),
+          radial-gradient(circle at 15% 10%, rgba(120, 255, 178, 0.18), transparent 28rem),
+          radial-gradient(circle at 80% 22%, rgba(214, 182, 106, 0.14), transparent 24rem),
+          linear-gradient(145deg, #070b0d 0%, #101819 56%, #080b0f 100%);
+        background-size: 52px 52px, 52px 52px, auto, auto, auto;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(1240px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 30px 0 72px;
+      }
+
+      .back {
+        display: inline-flex;
+        margin-bottom: 26px;
+        color: var(--muted);
+        font: 800 13px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+        text-decoration: none;
+      }
+
+      .hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(300px, 1.05fr);
+        gap: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        box-shadow: 0 42px 120px rgba(0, 0, 0, 0.48);
+      }
+
+      .hero::after {
+        content: "FICTIONAL SPECIAL INTELLIGENCE UNIT";
+        position: absolute;
+        right: 18px;
+        bottom: 14px;
+        color: rgba(120, 255, 178, 0.38);
+        font: 900 10px/1 "Courier New", monospace;
+        letter-spacing: 0.28em;
+      }
+
+      .hero-copy {
+        padding: clamp(28px, 5vw, 58px);
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--green);
+        font: 900 12px/1 "Courier New", monospace;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(34px, 6vw, 76px);
+        line-height: 0.98;
+        letter-spacing: -0.08em;
+      }
+
+      .lead {
+        max-width: 720px;
+        margin: 20px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.9;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 20px;
+      }
+
+      .chip {
+        padding: 8px 11px;
+        border: 1px solid color-mix(in srgb, var(--green), white 12%);
+        border-radius: 4px;
+        background: color-mix(in srgb, var(--green), transparent 88%);
+        font: 900 12px/1 "Courier New", monospace;
+      }
+
+      .hero img {
+        width: 100%;
+        height: 100%;
+        min-height: 360px;
+        object-fit: cover;
+        border-left: 1px solid var(--line);
+        filter: contrast(1.04) saturate(0.96);
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 24px;
+      }
+
+      .card {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.34);
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+      }
+
+      .card img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        filter: contrast(1.03);
+      }
+
+      .card figcaption {
+        padding: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .card strong {
+        display: block;
+        color: var(--amber);
+        font-size: 18px;
+        font-weight: 900;
+        line-height: 1.3;
+      }
+
+      .card p {
+        margin: 9px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.75;
+      }
+
+      @media (max-width: 820px) {
+        .hero,
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+
+        .hero img {
+          min-height: 220px;
+          border-top: 1px solid var(--line);
+          border-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <a class="back" href="../">← サンプル入口へ戻る</a>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">shinobi future military 3D game</p>
+          <h1>忍者は現代にも残り、別班として諜報する。</h1>
+          <p class="lead">
+            古い忍びの家系が、未来の日本で架空の特殊情報部隊として再編されるSFミリタリー3Dゲーム構想です。
+            銃撃戦ではなく、潜入・監視・証拠抽出・撤収判断を中心に、現代忍者の存在理由をゲーム画面で組み立てます。
+          </p>
+          <div class="chips">
+            <span class="chip">STEALTH INTEL</span>
+            <span class="chip">FICTIONAL UNIT</span>
+            <span class="chip">NEAR FUTURE JAPAN</span>
+          </div>
+        </div>
+        <img src="./scene-01-night-infiltration.jpg" alt="現代忍者別班の夜間潜入画面">
+      </section>
+
+      <section class="gallery" aria-label="現代忍者別班ゲーム画面案">
+        <figure class="card">
+          <a href="./scene-01-night-infiltration.jpg"><img src="./scene-01-night-infiltration.jpg" alt="夜間潜入のゲーム画面"></a>
+          <figcaption><strong>夜間潜入</strong><p>雨の防衛施設を舞台に、ステルス経路・監視カメラ・検知範囲を読む基本プレイ画面。</p></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-02-drone-command.jpg"><img src="./scene-02-drone-command.jpg" alt="ドローン指揮と偵察のゲーム画面"></a>
+          <figcaption><strong>ドローン偵察</strong><p>高架下の指揮車両から、複数ドローンの映像を切り替えて目標をタグ付けする画面。</p></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-03-urban-intel.jpg"><img src="./scene-03-urban-intel.jpg" alt="都市部の証拠抽出ゲーム画面"></a>
+          <figcaption><strong>都市諜報</strong><p>遮蔽に隠れながら通信箱へ接続し、非殺傷ガジェットで証拠を抜く緊張感のある場面。</p></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-04-briefing-room.jpg"><img src="./scene-04-briefing-room.jpg" alt="作戦ブリーフィングとロードアウト画面"></a>
+          <figcaption><strong>作戦ブリーフィング</strong><p>隊員ロール、装備、潜入経路、リスク予測を決める、ミッション前の中核メニュー。</p></figcaption>
+        </figure>
+      </section>
+    </main>
+  </body>
+</html>

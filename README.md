@@ -21,6 +21,8 @@ Open `http://127.0.0.1:8765/` after the server starts.
 
 - `site/index.html`: collection entrance page.
 - `site/vtuber/`: six VTuber character prototypes with character sheets, stream screens, 3D live visuals, character-specific game mockups, and three Seedance 2.0 audio videos.
+- `site/galaxy-armada/`: four social RPG concept screens about alien high school girls wearing galaxy-fleet battleship armor.
+- `site/shinobi-jgsdf/`: four near-future 3D military game concept screens about fictional modern shinobi intelligence operations.
 - `site/comike/`: six centered-character Comiket camera-kid panorama scenes.
 - `site/shinkansen/`: three railway-photography panorama scenes.
 - `site/parkour/`: three first-person scenic parkour panorama scenes.
