@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>センチメンタル制服イラスト集</title>
+    <style>
+      :root {
+        --bg: #fffaf3;
+        --ink: #463a39;
+        --muted: #837271;
+        --line: rgba(109, 88, 87, 0.18);
+        --panel: rgba(255, 255, 255, 0.78);
+        --rose: #f2c6c9;
+        --cream: #fff1d8;
+        --sky: #dbeaf7;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+        background:
+          radial-gradient(circle at 12% 10%, rgba(242, 198, 201, 0.45), transparent 28rem),
+          radial-gradient(circle at 84% 14%, rgba(219, 234, 247, 0.55), transparent 30rem),
+          linear-gradient(180deg, #fffdf8 0%, #fff7ef 48%, #fffaf4 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
+          linear-gradient(rgba(127, 110, 104, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(127, 110, 104, 0.05) 1px, transparent 1px);
+        background-size: auto, 38px 38px, 38px 38px;
+        mix-blend-mode: multiply;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(1220px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 30px 0 72px;
+      }
+
+      .back {
+        display: inline-flex;
+        gap: 8px;
+        margin-bottom: 26px;
+        color: var(--muted);
+        font: 800 13px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+        text-decoration: none;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+        gap: 28px;
+        align-items: center;
+        padding: clamp(28px, 5vw, 54px);
+        border: 1px solid var(--line);
+        border-radius: 34px;
+        background:
+          linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.55)),
+          var(--panel);
+        box-shadow: 0 26px 80px rgba(182, 149, 143, 0.14);
+        backdrop-filter: blur(18px);
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: #c58a92;
+        font: 900 12px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(36px, 7vw, 82px);
+        line-height: 0.94;
+        letter-spacing: -0.08em;
+      }
+
+      .lead {
+        max-width: 720px;
+        margin: 18px 0 0;
+        color: var(--muted);
+        font: 600 15px/1.95 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .chip {
+        padding: 8px 12px;
+        border: 1px solid rgba(197, 138, 146, 0.35);
+        border-radius: 999px;
+        background: rgba(255,255,255,0.8);
+        font: 800 12px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      .hero-visual {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 320px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 50% 24%, rgba(255,255,255,0.95), rgba(255,255,255,0.65)),
+          linear-gradient(180deg, rgba(255, 241, 216, 0.58), rgba(219, 234, 247, 0.38));
+      }
+
+      .hero-visual img {
+        display: block;
+        width: min(100%, 340px);
+        filter: drop-shadow(0 18px 24px rgba(145, 118, 115, 0.12));
+      }
+
+      .section-title {
+        margin: 34px 0 14px;
+        color: #a97982;
+        font: 900 14px/1 "Hiragino Sans", "Yu Gothic", sans-serif;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        background: rgba(255,255,255,0.78);
+        box-shadow: 0 18px 52px rgba(181, 151, 146, 0.12);
+      }
+
+      .card a {
+        display: block;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,248,240,0.9));
+      }
+
+      .card img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: contain;
+      }
+
+      .card figcaption {
+        padding: 16px 16px 18px;
+      }
+
+      .card strong {
+        display: block;
+        font: 900 18px/1.3 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      .card span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font: 600 13px/1.75 "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .gallery {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .shell {
+          width: min(100% - 20px, 1220px);
+          padding-bottom: 42px;
+        }
+
+        .hero,
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <a class="back" href="../">← サンプル入口へ戻る</a>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Sentimental Schoolgirl Gallery</p>
+          <h1>同じ子の気配を、季節と感情でほどいていく。</h1>
+          <p class="lead">
+            白背景のシンプルイラストを起点に、同じキャラのまま服装、仕草、季節感、感情だけを少しずつ変えたギャラリーです。
+            入口まではダークでも、このページに入った瞬間だけ、やわらかいライトテーマの余白と空気に切り替えています。
+          </p>
+          <div class="chips">
+            <span class="chip">黒髪ポニーテール</span>
+            <span class="chip">架空私立制服</span>
+            <span class="chip">センチメンタル</span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src="./scene-01-uniform-watch.png" alt="センチメンタル制服キャラの基準イラスト">
+        </div>
+      </section>
+
+      <p class="section-title">Initial Three</p>
+      <section class="gallery" aria-label="初期3枚">
+        <figure class="card">
+          <a href="./scene-01-uniform-watch.png"><img src="./scene-01-uniform-watch.png" alt="制服で腕ガジェットを見るポーズ"></a>
+          <figcaption><strong>制服と腕ガジェット</strong><span>この子の基準にした、紺ブレザーと腕まわりの機械ディテール。</span></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-02-seated-cardigan.png"><img src="./scene-02-seated-cardigan.png" alt="座りポーズのカーディガン制服"></a>
+          <figcaption><strong>座りポーズ</strong><span>静かな横顔と、感情を抑えた座り方のラフ。</span></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-03-gadget-brooch.png"><img src="./scene-03-gadget-brooch.png" alt="ガジェットブローチを持つ制服イラスト"></a>
+          <figcaption><strong>ガジェット差分</strong><span>顔つきは近いまま、ブローチ型の謎ガジェットへ振った試作。</span></figcaption>
+        </figure>
+      </section>
+
+      <p class="section-title">Sentimental Variants</p>
+      <section class="gallery" aria-label="追加バリエーション">
+        <figure class="card">
+          <a href="./scene-11-boyish-cap.png"><img src="./scene-11-boyish-cap.png" alt="帽子ありのボーイッシュファッション"></a>
+          <figcaption><strong>ボーイッシュ帽子</strong><span>少しだけ少年っぽい空気に寄せた、キャップとゆるい足元。</span></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-10-bread-rush.png"><img src="./scene-10-bread-rush.png" alt="口にパンをくわえて急ぐポーズ"></a>
+          <figcaption><strong>パンくわえ通学</strong><span>自転車に乗る勢いだけをポーズで残した、あわただしい朝。</span></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-09-summer-beach.png"><img src="./scene-09-summer-beach.png" alt="水着パーカーと麦わら帽の夏姿"></a>
+          <figcaption><strong>夏の砂浜</strong><span>白背景のままでも海辺の風が残る、水着パーカーと麦わら帽。</span></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-08-back-peace.png"><img src="./scene-08-back-peace.png" alt="後ろ姿で片手ピース"></a>
+          <figcaption><strong>後ろ姿ピース</strong><span>顔を見せすぎないのに、この子だと分かる後ろ姿の一枚。</span></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-07-yukata-fireworks.png"><img src="./scene-07-yukata-fireworks.png" alt="浴衣で見上げる感動の表情"></a>
+          <figcaption><strong>浴衣と見上げる目</strong><span>花火そのものは描かず、見上げた表情だけで夏の夜を想像させる。</span></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-06-riverside-barefoot.png"><img src="./scene-06-riverside-barefoot.png" alt="素足でくつろぐポーズ"></a>
+          <figcaption><strong>河原で素足</strong><span>水辺に足をつけたあとの力の抜け方を、素足と肩の落ち方で表現。</span></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-05-jersey-running.png"><img src="./scene-05-jersey-running.png" alt="ジャージでランニング"></a>
+          <figcaption><strong>ジャージで走る</strong><span>スポーツ然としすぎず、静かな必死さを残したランニング姿。</span></figcaption>
+        </figure>
+        <figure class="card">
+          <a href="./scene-04-quiet-crying.png"><img src="./scene-04-quiet-crying.png" alt="机に枕を置いて静かに泣くようなポーズ"></a>
+          <figcaption><strong>静かに泣く</strong><span>大きく崩れないまま、胸の内側だけが沈んでいく感じのポーズ。</span></figcaption>
+        </figure>
+      </section>
+    </main>
+  </body>
+</html>
