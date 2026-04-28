@@ -20,7 +20,8 @@ Open `http://127.0.0.1:8765/` after the server starts.
 ## Contents
 
 - `site/index.html`: collection entrance page.
-- `site/sentimental-schoolgirl/`: eleven light-theme sentimental illustrations built around the same private-school girl character.
+- `site/fisheye-mecha-sword/`: six fantasy illustrations of women carrying giant mechanical swords across fisheye medieval megacities.
+- `site/sentimental-schoolgirl/`: fifteen light-theme sentimental illustrations built around the same private-school girl character.
 - `site/vtuber/`: six VTuber character prototypes with character sheets, stream screens, 3D live visuals, character-specific game mockups, and seven audio videos.
 - `site/galaxy-armada/`: four social RPG concept screens about alien high school girls wearing galaxy-fleet battleship armor.
 - `site/shinobi-jgsdf/`: four near-future 3D military game concept screens about fictional modern shinobi intelligence operations.
